@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+    <!--Titles-->
+    <v:String x:Key="MainWindowTitle">Objective manager</v:String>
+    <v:String x:Key="SignInViewTitle">Sign in</v:String>
+    <v:String x:Key="SignUpViewTitle">Sign up</v:String>
+    <!--Labels-->
+    <v:String x:Key="UsernameLabel">Username</v:String>
+    <v:String x:Key="PasswordLabel">Password</v:String>
+    <v:String x:Key="FullnameLabel">Fullname</v:String>
+    <!--Button captions-->
+    <v:String x:Key="SubmitCaption">Submit</v:String>
+    <v:String x:Key="SignUpCaption">Sign up</v:String>
+    <v:String x:Key="BackCaption">Back</v:String>
+    <!--Error messages-->
+    <v:String x:Key="UserNotFoundMessage">There is no such a user. Check entered data.</v:String>
+    <v:String x:Key="IncorrectPasswordMessage">Incorrect password.</v:String>
+    <v:String x:Key="RoleNotFoundMessage">There is no such a role.</v:String>
+</ResourceDictionary>

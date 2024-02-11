@@ -1,0 +1,18 @@
+﻿<mah:MetroWindow x:Class="ObjectiveManagerApp.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:ObjectiveManagerApp.UI.ViewModels" 
+        xmlns:local="clr-namespace:ObjectiveManagerApp.UI" xmlns:views="clr-namespace:ObjectiveManagerApp.UI.Views"
+                 mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
+        Title="{DynamicResource MainWindowTitle}" Height="450" Width="800">
+    <Grid>
+        <TabControl>
+            <TabItem x:Name="SignInTab"/>
+            <TabItem x:Name="DashboardTab"/>
+        </TabControl>
+    </Grid>
+</mah:MetroWindow>
