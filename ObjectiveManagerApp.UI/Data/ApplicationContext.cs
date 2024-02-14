@@ -13,7 +13,6 @@ namespace ObjectiveManagerApp.UI.Data
         public DbSet<Objective> Objectives { get; set; } = null!;
         public DbSet<Project> Projects { get; set; } = null!;
         public DbSet<Role> Roles { get; set; } = null!;
-
-
+        public DbSet<Category> Categories { get; set; } = null!;
     }
 }

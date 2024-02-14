@@ -12,18 +12,25 @@ namespace ObjectiveManagerApp.Common.Models
         public string Password { get; set; } = string.Empty;
         public byte[]? Salt { get; set; }
         public string Fullname { get; set; } = string.Empty;
-        public int RoleId { get; set; } = 1;
+        public Role Role { get; set; }
+        public ICollection<Objective> Objectives { get; set; }
 
-        public User(int id, string userName, string password, byte[] salt, string fullName, int roleId)
+        public User(int id, string userName, string password, byte[] salt, string fullName, Role role, ICollection<Objective> objectives)
         {
             Id = id;
             Username = userName;
             Password = password;
             Salt = salt;
             Fullname = fullName;
-            RoleId = roleId;
+            Role = role;
+            Objectives = objectives;
         }
 
         public User() { }
+
+        public override string ToString()
+        {
+            return Username;
+        }
     }
 }

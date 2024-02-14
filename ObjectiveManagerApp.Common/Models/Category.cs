@@ -3,21 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ObjectiveManagerApp.Common.Models
 {
-    public class Role
+    public class Category
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<User> Users { get; set; }
-
-        public Role(int id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
-
-        
-        public Role() { }
+        public List<Objective> Objectives { get; set;}
     }
 }

@@ -5,6 +5,7 @@
     <v:String x:Key="MainWindowTitle">Objective manager</v:String>
     <v:String x:Key="SignInViewTitle">Sign in</v:String>
     <v:String x:Key="SignUpViewTitle">Sign up</v:String>
+    <v:String x:Key="ProjectViewTitle">Projects</v:String>
     <!--Labels-->
     <v:String x:Key="UsernameLabel">Username</v:String>
     <v:String x:Key="PasswordLabel">Password</v:String>
@@ -13,6 +14,17 @@
     <v:String x:Key="SubmitCaption">Submit</v:String>
     <v:String x:Key="SignUpCaption">Sign up</v:String>
     <v:String x:Key="BackCaption">Back</v:String>
+    <v:String x:Key="ProjectsCaption">Projects</v:String>
+    <v:String x:Key="DashboardCaption">Dashboard</v:String>
+    <v:String x:Key="LogoutCaption">Logout</v:String>
+    <v:String x:Key="GoToProjectCaption">Go to project</v:String>
+    <!--Project view-->
+    <v:String x:Key="ProjectListIsEmpty">There is no projects...</v:String>
+    <v:String x:Key="ProjectInfoHeader">Info</v:String>
+    <v:String x:Key="ProjectNameLabel">Project name</v:String>
+    <v:String x:Key="DescriptionLabel">Description</v:String>
+    <v:String x:Key="CreatedDateLabel">Created date</v:String>
+    <v:String x:Key="UpdatedDateLabel">Updated date</v:String>
     <!--Error messages-->
     <v:String x:Key="UserNotFoundMessage">There is no such a user. Check entered data.</v:String>
     <v:String x:Key="IncorrectPasswordMessage">Incorrect password.</v:String>

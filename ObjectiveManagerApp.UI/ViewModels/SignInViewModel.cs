@@ -1,7 +1,6 @@
 ﻿using ObjectiveManagerApp.Common.Models;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.Util;
-using System.ComponentModel;
 
 namespace ObjectiveManagerApp.UI.ViewModels
 {
@@ -9,17 +8,18 @@ namespace ObjectiveManagerApp.UI.ViewModels
     {
         private readonly IAuthService _authService;
         private bool _isSigningUp = false;
+        private bool _isLoading = false;
         private User _user = new User();
 
         public DelegateCommand SubmitCommand { get; }
-        public DelegateCommand GotToSignUpCommand { get; }
+        public DelegateCommand GoToSignUpCommand { get; }
         public DelegateCommand BackToSignInCommand { get; }
 
         public SignInViewModel(IAuthService authService)
         {
             _authService = authService;
             SubmitCommand = new DelegateCommand(SubmitCommand_Executed);
-            GotToSignUpCommand = new DelegateCommand(GotToSignUpCommand_Executed);
+            GoToSignUpCommand = new DelegateCommand(GoToSignUpCommand_Executed);
             BackToSignInCommand = new DelegateCommand(BackToSignInCommand_Executed);
         }
 
@@ -62,12 +62,24 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
         public async void SubmitCommand_Executed(object sender)
         {
             try
             {
+                IsLoading = true;
+
                 if (IsSigningUp)
-                {
+                { 
                     await SignUpAsync();
                 }
                 else
@@ -77,11 +89,12 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
             finally
             {
-
+                IsLoading = false;
+                ClearForm();
             }
         }
 
-        public void GotToSignUpCommand_Executed(object sender)
+        public void GoToSignUpCommand_Executed(object sender)
         {
             IsSigningUp = true;
         }
@@ -101,6 +114,14 @@ namespace ObjectiveManagerApp.UI.ViewModels
         private async Task SignUpAsync()
         {
             await _authService.RegisterAsync(_user);
+        }
+
+        private void ClearForm()
+        {
+            Username = string.Empty;
+            Password = string.Empty;
+            Fullname = string.Empty;
+            _user = new User();
         }
     }
 }

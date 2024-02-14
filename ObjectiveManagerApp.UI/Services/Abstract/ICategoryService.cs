@@ -2,8 +2,8 @@
 
 namespace ObjectiveManagerApp.UI.Services.Abstract
 {
-    public interface IProjectService
+    public interface ICategoryService
     {
-        IAsyncEnumerable<IEnumerable<Project>> GetChunkAsync();
+        Task<IEnumerable<Category>> GetAllAsync();
     }
 }

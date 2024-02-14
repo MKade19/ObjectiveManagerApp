@@ -5,13 +5,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:ObjectiveManagerApp.UI.ViewModels" 
-        xmlns:local="clr-namespace:ObjectiveManagerApp.UI" xmlns:views="clr-namespace:ObjectiveManagerApp.UI.Views"
-                 mc:Ignorable="d"
+        xmlns:local="clr-namespace:ObjectiveManagerApp.UI" 
+        xmlns:views="clr-namespace:ObjectiveManagerApp.UI.Views"
+        mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
-        Title="{DynamicResource MainWindowTitle}" Height="450" Width="800">
+        Title="{DynamicResource MainWindowTitle}" MinHeight="500" Width="1000">
     <Grid>
-        <TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="20" MaxHeight="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu Panel.ZIndex="-1" Background="#FFDEDEDE">
+            <MenuItem Command="{Binding GoToProjectsTabCommand}" Header="{DynamicResource ProjectsCaption}"/>
+            <MenuItem Command="{Binding GoToDashboardTabCommand}" Header="{DynamicResource DashboardCaption}"/>
+            <MenuItem Command="{Binding LogoutCommand}" Header="{DynamicResource LogoutCaption}"/>
+        </Menu>
+        <TabControl SelectedIndex="{Binding ActiveTabIndex}" Grid.Row="1">
             <TabItem x:Name="SignInTab"/>
+            <TabItem x:Name="ProjectsTab"/>
             <TabItem x:Name="DashboardTab"/>
         </TabControl>
     </Grid>

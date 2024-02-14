@@ -8,7 +8,7 @@ namespace ObjectiveManagerApp.UI.Data
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationContext Db;
-        private const string NotFoundErrorMessageName = "RoleNotFoundMessage";
+        private const string NotFoundErrorMessageName = "UserNotFoundMessage";
 
         public UserRepository(ApplicationContext db)
         {
@@ -65,7 +65,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                return await db.Users.Where(u => u.Username == username).FirstAsync();
+                return await db.Users.Where(u => u.Username == username).Include("Role").FirstAsync();
             }
         }
 

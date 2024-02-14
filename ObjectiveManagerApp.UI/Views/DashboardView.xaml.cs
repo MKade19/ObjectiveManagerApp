@@ -1,4 +1,5 @@
-﻿using ObjectiveManagerApp.UI.ViewModels;
+﻿using ObjectiveManagerApp.UI.Services.Abstract;
+using ObjectiveManagerApp.UI.ViewModels;
 using System.Windows.Controls;
 
 namespace ObjectiveManagerApp.UI.Views
@@ -8,10 +9,10 @@ namespace ObjectiveManagerApp.UI.Views
     /// </summary>
     public partial class DashboardView : UserControl
     {
-        public DashboardView()
+        public DashboardView(ICategoryService categoryService)
         {
             InitializeComponent();
-            DataContext = new DashboardViewModel();
+            DataContext = new DashboardViewModel(categoryService);
         }
     }
 }

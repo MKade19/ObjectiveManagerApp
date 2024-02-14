@@ -37,7 +37,7 @@ namespace ObjectiveManagerApp.UI.Services
                 throw new IncorrectPasswordException((string)Application.Current.FindResource(IncorrectPasswordErrorMessageName));
             }
 
-            Role role = await _roleRepository.GetRoleById(user.RoleId);
+            Role role = userFromDB.Role;
             TokenPayload payload = new TokenPayload(userFromDB.Username, role.Name);
             AuthData authData = new AuthData(await _tokenService.GetTokenAsync(payload), role.Name);
 
@@ -53,6 +53,7 @@ namespace ObjectiveManagerApp.UI.Services
         {
             user.Password = _hashService.GetHash(user.Password, out byte[] salt);
             user.Salt = salt;
+            user.Role = await _roleRepository.GetRoleById(1);
 
             await _userRepository.CreateOneAsync(user);
         }

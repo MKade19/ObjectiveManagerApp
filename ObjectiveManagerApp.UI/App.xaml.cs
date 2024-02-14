@@ -41,10 +41,12 @@ namespace ObjectiveManagerApp.UI
                     services.AddTransient<IEmployeeService, EmployeeService>();
                     services.AddTransient<IProjectService, ProjectService>();
                     services.AddTransient<IObjectiveService, ObjectiveService>();
+                    services.AddTransient<ICategoryService, CategoryService>();
                     services.AddTransient<IAuthService, AuthService>();
                     services.AddTransient<ITokenService, TokenService>();
                     services.AddTransient<IHashService, HashService>();
                     services.AddTransient<IRoleRepository, RoleRepository>();
+                    services.AddTransient<ICategoryRepository, CategoryRepository>();
                 })
                 .Build();
         }
