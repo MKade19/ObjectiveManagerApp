@@ -13,14 +13,30 @@ namespace ObjectiveManagerApp.UI.Data
         {
             Db = db;
         }
-        public Task CreateOneAsync(Project entity)
+        public Task CreateOneAsync(Project project)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteOneAsync(Project entity)
+        public Task DeleteOneAsync(Project project)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Project>> GetAllAsync()
+        {
+            using (ApplicationContext db = Db)
+            {
+                return await db.Projects.ToListAsync();
+            }
+        }
+
+        public async Task<Project> GetByIdAsync(int id)
+        {
+            using (ApplicationContext db = Db)
+            {
+                return await db.Projects.FirstAsync(p => p.Id == id);
+            }
         }
 
         public async IAsyncEnumerable<IEnumerable<Project>> GetChunkAsync()
@@ -31,12 +47,13 @@ namespace ObjectiveManagerApp.UI.Data
                 {
                     yield return await db.Projects.Skip(i)
                         .Take(DataConstants.RecordsLimit)
+                        .OrderBy(p => p.Id)
                         .ToListAsync();
                 }
             }
         }
 
-        public Task UpdateByIdAsync(Project entity)
+        public Task UpdateByIdAsync(Project project)
         {
             throw new NotImplementedException();
         }

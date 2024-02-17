@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ObjectiveManagerApp.UI.Services.Abstract
+﻿namespace ObjectiveManagerApp.UI.Services.Abstract
 {
     public interface IHashService
     {
-        string GetHash(string stringToHash, out byte[] salt);
-        bool VerifyHash(string hashedString, string hash, byte[] salt);
+        string GenerateHash(string stringToHash, out byte[] salt);
+        bool VerifyHash(string stringToCompare, string hashedString, byte[]? salt);
     }
 }

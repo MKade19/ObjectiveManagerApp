@@ -1,12 +1,6 @@
-﻿using ObjectiveManagerApp.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ObjectiveManagerApp.UI.Util
+﻿namespace ObjectiveManagerApp.UI.Util
 {
+
     public class EventAggregator
     {
         private EventAggregator() { }
@@ -18,30 +12,17 @@ namespace ObjectiveManagerApp.UI.Util
             get => _instance ?? (_instance = new EventAggregator());
         }
 
-        public event EventHandler? GoToDashboard;
-        public event EventHandler? SaveToDbEnded;
-        public event EventHandler? ShowFileDataStarted;
-        public event EventHandler? ShowFileDataEnded;
-        public static event EventHandler? LanguageChanged;
+        public event EventHandler? ClearPasswordBox;
+        public event EventHandler<NavigationEventArgs>? GoToDashboard;
 
-        public void RaiseGoToDashboardEvent()
+        public void RaiseClearPasswordBoxEvent()
         {
-            GoToDashboard?.Invoke(this, EventArgs.Empty);
+            ClearPasswordBox?.Invoke(this, EventArgs.Empty);
         }
 
-        public void RaiseSaveToDbEndedEvent()
+        public void RaiseGoToDashboardEvent(int projectId)
         {
-            SaveToDbEnded?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RaiseShowFileDataStartedEvent()
-        {
-            ShowFileDataStarted?.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RaiseShowFileDataEndedEvent()
-        {
-            ShowFileDataEnded?.Invoke(this, EventArgs.Empty);
+            GoToDashboard?.Invoke(this, new NavigationEventArgs(projectId));
         }
     }
 }

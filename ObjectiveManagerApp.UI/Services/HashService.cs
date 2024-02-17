@@ -6,11 +6,17 @@ namespace ObjectiveManagerApp.UI.Services
 {
     public class HashService : IHashService
     {
-        const int keySize = 64;
-        const int iterations = 350000;
-        HashAlgorithmName hashAlgorithm = HashAlgorithmName.SHA512;
+        private const int keySize = 64;
+        private const int iterations = 350000;
+        private HashAlgorithmName hashAlgorithm = HashAlgorithmName.SHA512;
 
-        public string GetHash(string stringToHash, out byte[] salt)
+        /// <summary>
+        /// Generates hash of the given string and salt for the hash.
+        /// </summary>
+        /// <param name="stringToHash">String that should be converted to hash.</param>
+        /// <param name="salt">Output parameter of generated salt.</param>
+        /// <returns>Hash of the given string.</returns>
+        public string GenerateHash(string stringToHash, out byte[] salt)
         {
             salt = RandomNumberGenerator.GetBytes(keySize);
 
@@ -26,7 +32,14 @@ namespace ObjectiveManagerApp.UI.Services
             return Convert.ToHexString(hash);
         }
 
-        public bool VerifyHash(string hashedString, string hash, byte[] salt)
+        /// <summary>
+        /// Verifies whether string matches with given hash or not.
+        /// </summary>
+        /// <param name="stringToCompare">Normal string to compare with the hashed one.</param>
+        /// <param name="hashedString">Hashed string.</param>
+        /// <param name="salt">Salt of password.</param>
+        /// <returns>True if string matches with hash, false if it doesn't.</returns>
+        public bool VerifyHash(string hashedString, string hash, byte[]? salt)
         {
             var hashToCompare = Rfc2898DeriveBytes.Pbkdf2(hashedString, salt, iterations, hashAlgorithm, keySize);
             return CryptographicOperations.FixedTimeEquals(hashToCompare, Convert.FromHexString(hash));

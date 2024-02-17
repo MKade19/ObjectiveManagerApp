@@ -2,8 +2,8 @@
 
 namespace ObjectiveManagerApp.UI.Data.Abstract
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IRepository<InternalUserData>
     {
-        Task<User> GetUserByUsernameAsync(string username);
+        Task<InternalUserData> GetUserByUsernameAsync(string username);
     }
 }

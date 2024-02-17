@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using ObjectiveManagerApp.UI.Data;
 using ObjectiveManagerApp.UI.Data.Abstract;
+using ObjectiveManagerApp.UI.Security;
 using ObjectiveManagerApp.UI.Services;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.Util;
@@ -20,6 +22,7 @@ namespace ObjectiveManagerApp.UI
         private readonly IHost _host;
         private static List<CultureInfo> _languages = new List<CultureInfo>();
         private const string DatabaseConnectionName = "MsSqlDbConnection";
+        private const string LogFileName = "log.txt";
 
         public App()
         {
@@ -28,6 +31,12 @@ namespace ObjectiveManagerApp.UI
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(ExceptionHandler);
 
             _host = Host.CreateDefaultBuilder()
+                .UseSerilog((host, loggerConfiguration) =>
+                {
+                    loggerConfiguration
+                    .WriteTo.File("log.txt")
+                    .MinimumLevel.Debug();
+                })
                 .ConfigureServices(services =>
                 {
                     services.AddSingleton<MainWindow>();
@@ -43,6 +52,7 @@ namespace ObjectiveManagerApp.UI
                     services.AddTransient<IObjectiveService, ObjectiveService>();
                     services.AddTransient<ICategoryService, CategoryService>();
                     services.AddTransient<IAuthService, AuthService>();
+                    services.AddTransient<IAuthenticationService, AuthenticationService>();
                     services.AddTransient<ITokenService, TokenService>();
                     services.AddTransient<IHashService, HashService>();
                     services.AddTransient<IRoleRepository, RoleRepository>();
@@ -65,6 +75,8 @@ namespace ObjectiveManagerApp.UI
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            CustomPrincipal customPrincipal = new CustomPrincipal();
+            AppDomain.CurrentDomain.SetThreadPrincipal(customPrincipal);
             var mainWindow = _host.Services.GetService<MainWindow>();
             mainWindow?.Show();
         }

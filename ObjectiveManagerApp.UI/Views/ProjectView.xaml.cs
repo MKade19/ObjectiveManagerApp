@@ -18,7 +18,7 @@ namespace ObjectiveManagerApp.UI.Views
 
         private async void ProjectView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            await ((ProjectViewModel)DataContext).LoadProjectsAsync();
+            await ((ProjectViewModel)DataContext).LoadUserProjectsAsync();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

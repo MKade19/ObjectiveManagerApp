@@ -19,5 +19,15 @@ namespace ObjectiveManagerApp.UI.Services
                 yield return projectChunk;
             }
         }
+
+        public async Task<IEnumerable<Project>> GetAllAsync()
+        {
+            return await _projectRepository.GetAllAsync();
+        }
+
+        public async Task<Project> GetByIdAsync(int id)
+        {
+            return await _projectRepository.GetByIdAsync(id);
+        }
     }
 }

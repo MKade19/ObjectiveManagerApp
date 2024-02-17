@@ -15,6 +15,16 @@ namespace ObjectiveManagerApp.UI.Data
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<Objective>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Objective> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IAsyncEnumerable<IEnumerable<Objective>> GetChunkAsync()
         {
             throw new NotImplementedException();

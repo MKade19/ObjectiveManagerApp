@@ -2,10 +2,9 @@
 
 namespace ObjectiveManagerApp.UI.Services.Abstract
 {
-    public interface IAuthService
+    public interface IAuthenticationService
     {
-        Task<AuthData> LoginAsync(InternalUserData user);
-        Task LogoutAsync();
+        Task<User> AuthenticateUserAsync(InternalUserData userFromUi);
         Task RegisterAsync(InternalUserData user);
     }
 }

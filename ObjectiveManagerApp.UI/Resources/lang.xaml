@@ -29,4 +29,8 @@
     <v:String x:Key="UserNotFoundMessage">There is no such a user. Check entered data.</v:String>
     <v:String x:Key="IncorrectPasswordMessage">Incorrect password.</v:String>
     <v:String x:Key="RoleNotFoundMessage">There is no such a role.</v:String>
+    <v:String x:Key="PrincipalIsNotSetMessage">The application's default thread principal must be set to a CustomPrincipal object on startup.</v:String>
+    <!--Information messages-->
+    <v:String x:Key="SignedUpMessage">You have signed up!</v:String>
+    <v:String x:Key="SignedInMessage">You have signed in!</v:String>
 </ResourceDictionary>

@@ -62,7 +62,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
-        public async Task LoadProjectsAsync()
+        public async Task LoadUserProjectsAsync()
         {
             try
             {
@@ -90,7 +90,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
         public void GoToDashboardCommand_Executed(object sender)
         {
-            
+            EventAggregator.Instance.RaiseGoToDashboardEvent(ActiveProject.Id);
         }
     }
 }

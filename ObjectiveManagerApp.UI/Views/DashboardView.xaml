@@ -4,9 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ObjectiveManagerApp.UI.Views"
+             xmlns:viewModels="clr-namespace:ObjectiveManagerApp.UI.ViewModels"
+             xmlns:converters="clr-namespace:ObjectiveManagerApp.UI.Converters"
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:DashboardViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:BoolToCollapsedConverter x:Key="BoolToCollapsedConverter"/>
+        <converters:BoolToVisibleConverter x:Key="BoolToVisibleConverter"/>
+        <converters:IntToVisibleConverter x:Key="IntToVisibleConverter"/>
+        <converters:IntToCollapsedConverted x:Key="IntToCollapsedConverted"/>
+    </UserControl.Resources>
     <Grid>
+        <Grid x:Name="DashboardGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition MaxHeight="100"/>
+            </Grid.RowDefinitions>
             
+        </Grid>
     </Grid>
 </UserControl>

@@ -17,5 +17,7 @@ namespace ObjectiveManagerApp.UI.Services
         {
             return await _categoryRepository.GetAllAsync();
         }
+
+        
     }
 }

@@ -9,6 +9,11 @@ namespace ObjectiveManagerApp.Common.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Objective> Objectives { get; set;}
+
+        public Category(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
     }
 }

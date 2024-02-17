@@ -1,23 +1,28 @@
 ﻿using ObjectiveManagerApp.Common.Models;
+using ObjectiveManagerApp.UI.Security;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.Util;
+using System.Windows;
 
 namespace ObjectiveManagerApp.UI.ViewModels
 {
     public class SignInViewModel : ViewModelBase
     {
-        private readonly IAuthService _authService;
+        private readonly IAuthenticationService _authenticationService;
         private bool _isSigningUp = false;
         private bool _isLoading = false;
-        private User _user = new User();
+        private InternalUserData _user = new InternalUserData();
+        private const string PrincipalIsNotSetErrorMessageName = "PrincipalIsNotSetMessage";
+        private const string SignedUpMessageName = "SignedUpMessage";
+        private const string SignedInMessageName = "SignedInMessage";
 
         public DelegateCommand SubmitCommand { get; }
         public DelegateCommand GoToSignUpCommand { get; }
         public DelegateCommand BackToSignInCommand { get; }
 
-        public SignInViewModel(IAuthService authService)
+        public SignInViewModel(IAuthenticationService authenticationService)
         {
-            _authService = authService;
+            _authenticationService = authenticationService;
             SubmitCommand = new DelegateCommand(SubmitCommand_Executed);
             GoToSignUpCommand = new DelegateCommand(GoToSignUpCommand_Executed);
             BackToSignInCommand = new DelegateCommand(BackToSignInCommand_Executed);
@@ -106,22 +111,30 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
         private async Task SignInAsync()
         {
-            AuthData authData = await _authService.LoginAsync(_user);
-            Properties.Settings.Default.AccessToken = authData.Token;
-            Properties.Settings.Default.Role = authData.Role;
+            User user = await _authenticationService.AuthenticateUserAsync(_user);
+
+            CustomPrincipal? customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
+            if (customPrincipal == null)
+            {
+                throw new ArgumentException((string)Application.Current.FindResource(PrincipalIsNotSetErrorMessageName));
+            }
+
+            customPrincipal.Identity = new CustomIdentity(user.Username, user.Roles);
+
+            MessageBoxStore.Information((string)Application.Current.FindResource(SignedInMessageName));
         }
 
         private async Task SignUpAsync()
         {
-            await _authService.RegisterAsync(_user);
+            await _authenticationService.RegisterAsync(_user);
+            MessageBoxStore.Information((string)Application.Current.FindResource(SignedUpMessageName));
         }
 
         private void ClearForm()
         {
             Username = string.Empty;
-            Password = string.Empty;
             Fullname = string.Empty;
-            _user = new User();
+            EventAggregator.Instance.RaiseClearPasswordBoxEvent();
         }
     }
 }

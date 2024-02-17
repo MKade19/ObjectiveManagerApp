@@ -2,6 +2,7 @@
 using ObjectiveManagerApp.Common.Models;
 using ObjectiveManagerApp.UI.Constants;
 using ObjectiveManagerApp.UI.Data.Abstract;
+using ObjectiveManagerApp.UI.Exceptions;
 
 namespace ObjectiveManagerApp.UI.Data
 {
@@ -15,7 +16,7 @@ namespace ObjectiveManagerApp.UI.Data
             Db = db;
         }
 
-        public async Task CreateOneAsync(User user)
+        public async Task CreateOneAsync(InternalUserData user)
         {
             using (ApplicationContext db = Db)
             {
@@ -24,7 +25,7 @@ namespace ObjectiveManagerApp.UI.Data
             }
         }
 
-        public async Task DeleteOneAsync(User user)
+        public async Task DeleteOneAsync(InternalUserData user)
         {
             using (ApplicationContext db = Db)
             {
@@ -37,7 +38,7 @@ namespace ObjectiveManagerApp.UI.Data
             }
         }
 
-        public async IAsyncEnumerable<IEnumerable<User>> GetChunkAsync()
+        public async IAsyncEnumerable<IEnumerable<InternalUserData>> GetChunkAsync()
         {
             using (ApplicationContext db = Db)
             {
@@ -50,24 +51,49 @@ namespace ObjectiveManagerApp.UI.Data
             }
         }
 
-        public async Task UpdateByIdAsync(User user)
+        public async Task UpdateByIdAsync(InternalUserData user)
         {
             using (ApplicationContext db = Db)
             {
-                User userFromDb = await db.Users.FindAsync(user.Id) ?? new User();
+                InternalUserData userFromDb = await db.Users.FindAsync(user.Id) ?? new InternalUserData();
 
                 userFromDb.Username = user.Username;
                 userFromDb.Fullname = user.Fullname;
             }
         }
 
-        public async Task<User> GetUserByUsernameAsync(string username)
+        public async Task<InternalUserData> GetUserByUsernameAsync(string username)
         {
             using (ApplicationContext db = Db)
             {
-                return await db.Users.Where(u => u.Username == username).Include("Role").FirstAsync();
+                InternalUserData? user = await db.Users
+                    .Where(u => u.Username == username)
+                    .Include("Roles")
+                    .FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                    throw new NotFoundException(NotFoundErrorMessageName);
+                }
+
+                return user;
             }
         }
 
+        public async Task<IEnumerable<InternalUserData>> GetAllAsync()
+        {
+            using (ApplicationContext db = Db)
+            {
+                return await db.Users.ToListAsync();
+            }
+        }
+
+        public async Task<InternalUserData> GetByIdAsync(int id)
+        {
+            using (ApplicationContext db = Db)
+            {
+                return await db.Users.FirstAsync(u => u.Id == id);
+            }
+        }
     }
 }

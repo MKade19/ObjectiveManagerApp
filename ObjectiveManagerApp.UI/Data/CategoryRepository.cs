@@ -40,5 +40,10 @@ namespace ObjectiveManagerApp.UI.Data
         {
             throw new NotImplementedException();
         }
+
+        public async Task<Category> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

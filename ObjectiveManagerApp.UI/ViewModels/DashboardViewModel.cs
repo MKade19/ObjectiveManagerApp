@@ -7,11 +7,14 @@ namespace ObjectiveManagerApp.UI.ViewModels
     public class DashboardViewModel : ViewModelBase
     {
         private readonly ICategoryService _categoryService;
-        private ObservableCollection<Category> _categories;
+        private readonly IProjectService _projectService;
+        private ObservableCollection<Category> _categories = new ObservableCollection<Category>();
+        private Project _project = new Project();
 
-        public DashboardViewModel(ICategoryService categoryService)
+        public DashboardViewModel(ICategoryService categoryService, IProjectService projectService)
         {
             _categoryService = categoryService;
+            _projectService = projectService;
         }
 
         public ObservableCollection<Category> Categories
@@ -24,9 +27,14 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
-        public async Task GetCategoriesAsync()
+        public async Task LoadCategoriesAsync()
         {
             Categories = new ObservableCollection<Category>(await _categoryService.GetAllAsync());
+        }
+
+        public async Task LoadProjectAsync(int id)
+        {
+            _project = await _projectService.GetByIdAsync(id);
         }
     }
 }

@@ -23,9 +23,9 @@ namespace ObjectiveManagerApp.UI.Services
             _roleRepository = roleRepository;
         }
 
-        public async Task<AuthData> LoginAsync(User user)
+        public async Task<AuthData> LoginAsync(InternalUserData user)
         {
-            User userFromDB = await _userRepository.GetUserByUsernameAsync(user.Username);
+            InternalUserData userFromDB = await _userRepository.GetUserByUsernameAsync(user.Username);
 
             if (userFromDB.Id == -1) 
             {
@@ -37,11 +37,11 @@ namespace ObjectiveManagerApp.UI.Services
                 throw new IncorrectPasswordException((string)Application.Current.FindResource(IncorrectPasswordErrorMessageName));
             }
 
-            Role role = userFromDB.Role;
-            TokenPayload payload = new TokenPayload(userFromDB.Username, role.Name);
-            AuthData authData = new AuthData(await _tokenService.GetTokenAsync(payload), role.Name);
+            //Role role = userFromDB.Role;
+            //TokenPayload payload = new TokenPayload(userFromDB.Username, role.Name);
+            //AuthData authData = new AuthData(await _tokenService.GetTokenAsync(payload), role.Name);
 
-            return authData;
+            return new AuthData();
         }
 
         public async Task LogoutAsync()
@@ -49,11 +49,11 @@ namespace ObjectiveManagerApp.UI.Services
             throw new NotImplementedException();
         }
 
-        public async Task RegisterAsync(User user)
+        public async Task RegisterAsync(InternalUserData user)
         {
-            user.Password = _hashService.GetHash(user.Password, out byte[] salt);
+            user.Password = _hashService.GenerateHash(user.Password, out byte[] salt);
             user.Salt = salt;
-            user.Role = await _roleRepository.GetRoleById(1);
+            //user.Role = await _roleRepository.GetRoleById(1);
 
             await _userRepository.CreateOneAsync(user);
         }

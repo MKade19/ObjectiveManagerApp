@@ -1,14 +1,12 @@
-﻿using ObjectiveManagerApp.Common.Models;
-
-namespace ObjectiveManagerApp.UI.Util
+﻿namespace ObjectiveManagerApp.UI.Util
 {
-    public class ProjectEventArgs : EventArgs
+    public class NavigationEventArgs : EventArgs
     {
-        public Project Project { get; set; }
+        public int ProjectId { get; set; }
 
-        public ProjectEventArgs(Project project)
+        public NavigationEventArgs(int projectId)
         {
-            Project = project;
+            ProjectId = projectId;
         }
     }
 }

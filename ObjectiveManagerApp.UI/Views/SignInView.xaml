@@ -47,7 +47,7 @@
                        Target="{Binding ElementName=PasswordBox}"
                        Content="{DynamicResource PasswordLabel}" 
                        FontSize="16" HorizontalAlignment="Right"/>
-                <TextBox x:Name="PasswordBox" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="30" MaxHeight="40" MinWidth="200" FontSize="14"/>
+                <PasswordBox x:Name="PasswordBox" MinHeight="30" MaxHeight="40" MinWidth="200" FontSize="14" PasswordChanged="PasswordBox_PasswordChanged"/>
             </StackPanel>
             <StackPanel Visibility="{Binding IsSigningUp, Converter={StaticResource BoolToVisibleConverter}}"
                         Grid.Row="3" 

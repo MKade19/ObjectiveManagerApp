@@ -1,4 +1,5 @@
-﻿using ObjectiveManagerApp.Common.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ObjectiveManagerApp.Common.Models;
 using ObjectiveManagerApp.UI.Data.Abstract;
 using ObjectiveManagerApp.UI.Exceptions;
 using System.Windows;
@@ -20,6 +21,14 @@ namespace ObjectiveManagerApp.UI.Data
             using (ApplicationContext db = Db)
             {
                 return await Db.Roles.FindAsync(id) ?? throw new NotFoundException((string)Application.Current.FindResource(NotFoundErrorMessageName));
+            }
+        }
+
+        public async Task<IEnumerable<Role>> GetAllAsync()
+        {
+            using (ApplicationContext db = Db)
+            {
+                return await Db.Roles.ToListAsync();
             }
         }
     }
