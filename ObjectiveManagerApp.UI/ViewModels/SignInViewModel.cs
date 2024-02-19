@@ -1,7 +1,10 @@
 ﻿using ObjectiveManagerApp.Common.Models;
+using ObjectiveManagerApp.UI.Constants;
+using ObjectiveManagerApp.UI.EventAggregation;
 using ObjectiveManagerApp.UI.Security;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.Util;
+using System.ComponentModel;
 using System.Windows;
 
 namespace ObjectiveManagerApp.UI.ViewModels
@@ -120,14 +123,19 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
 
             customPrincipal.Identity = new CustomIdentity(user.Username, user.Roles);
-
             MessageBoxStore.Information((string)Application.Current.FindResource(SignedInMessageName));
+
+            if (customPrincipal.IsInRole(nameof(RoleTypes.ProjectManager)))
+            {
+                EventAggregator.Instance.RaiseGoToProjectsEvent(user.Id);
+            }
         }
 
         private async Task SignUpAsync()
         {
             await _authenticationService.RegisterAsync(_user);
             MessageBoxStore.Information((string)Application.Current.FindResource(SignedUpMessageName));
+            IsSigningUp = false;
         }
 
         private void ClearForm()

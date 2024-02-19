@@ -6,6 +6,11 @@
     <v:String x:Key="SignInViewTitle">Sign in</v:String>
     <v:String x:Key="SignUpViewTitle">Sign up</v:String>
     <v:String x:Key="ProjectViewTitle">Projects</v:String>
+    <!--Dialog titles-->
+    <v:String x:Key="ConfirmationDialogTitle">Confirmation</v:String>
+    <v:String x:Key="ErrorDialogTitle">Error</v:String>
+    <v:String x:Key="WarningDialogTitle">Warning</v:String>
+    <v:String x:Key="InformationDialogTitle">Information</v:String>
     <!--Labels-->
     <v:String x:Key="UsernameLabel">Username</v:String>
     <v:String x:Key="PasswordLabel">Password</v:String>

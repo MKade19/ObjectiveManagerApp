@@ -1,4 +1,5 @@
 ﻿using ObjectiveManagerApp.Common.Models;
+using ObjectiveManagerApp.UI.EventAggregation;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.Util;
 using System.Collections.ObjectModel;
@@ -62,20 +63,13 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
-        public async Task LoadUserProjectsAsync()
+        public async Task LoadUserProjectsAsync(int id)
         {
             try
             {
                 IsLoading = true;
                 Projects.Clear();
-
-                await foreach (var projectChunk in _projectService.GetChunkAsync())
-                {
-                    foreach (var project in projectChunk)
-                    {
-                        Projects.Add(project);
-                    }
-                }
+                Projects = new ObservableCollection<Project>(await _projectService.GetByUserIdAsync(id));
             }
             finally
             {

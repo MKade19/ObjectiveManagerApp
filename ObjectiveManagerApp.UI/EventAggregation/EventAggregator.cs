@@ -1,4 +1,4 @@
-﻿namespace ObjectiveManagerApp.UI.Util
+﻿namespace ObjectiveManagerApp.UI.EventAggregation
 {
 
     public class EventAggregator
@@ -13,11 +13,17 @@
         }
 
         public event EventHandler? ClearPasswordBox;
+        public event EventHandler<NavigationEventArgs>? GoToProjects;
         public event EventHandler<NavigationEventArgs>? GoToDashboard;
 
         public void RaiseClearPasswordBoxEvent()
         {
             ClearPasswordBox?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RaiseGoToProjectsEvent(int userId)
+        {
+            GoToProjects?.Invoke(this, new NavigationEventArgs(userId));
         }
 
         public void RaiseGoToDashboardEvent(int projectId)

@@ -99,7 +99,7 @@
                         <Button Content="{DynamicResource GoToProjectCaption}" 
                                 FontSize="14" 
                                 FontWeight="Bold"
-                                Command="{Binding GoToSignUpCommand}"/>
+                                Command="{Binding GoToDashboardCommand}"/>
                     </StackPanel>
                 </Grid>
             </Border>

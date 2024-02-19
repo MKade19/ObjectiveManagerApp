@@ -22,6 +22,28 @@
                 <RowDefinition/>
                 <RowDefinition MaxHeight="100"/>
             </Grid.RowDefinitions>
+
+
+            <ListView ItemsSource="{Binding CategorizedTasks}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition MaxHeight="200"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="{Binding Category}" />
+
+                            <ListView Grid.Row="1" 
+                                      ItemsSource="{Binding Tasks}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+            
+            
             
         </Grid>
     </Grid>

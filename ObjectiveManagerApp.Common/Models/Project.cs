@@ -13,6 +13,8 @@ namespace ObjectiveManagerApp.Common.Models
         public DateTime CreatedDate {  get; set; }
         public DateTime UpdatedDate {  get; set; }
         public int ManagerId { get; set; }
+
+        //[ForeignKey("Id")]
         public ICollection<Objective> Objectives { get; set; }
 
         public Project(int id, string name, string description, DateTime createdDate, DateTime updatedDate)

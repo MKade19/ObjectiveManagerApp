@@ -27,7 +27,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                return await db.Projects.ToListAsync();
+                return await db.Projects.Include("Objectives").ToListAsync();
             }
         }
 
@@ -36,6 +36,16 @@ namespace ObjectiveManagerApp.UI.Data
             using (ApplicationContext db = Db)
             {
                 return await db.Projects.FirstAsync(p => p.Id == id);
+            }
+        }
+
+        public async Task<IEnumerable<Project>> GetByUserIdAsync(int userId)
+        {
+            using (ApplicationContext db = Db)
+            {
+                return await db.Projects
+                    .Where(p => p.ManagerId == userId)
+                    .ToListAsync();
             }
         }
 
@@ -48,6 +58,7 @@ namespace ObjectiveManagerApp.UI.Data
                     yield return await db.Projects.Skip(i)
                         .Take(DataConstants.RecordsLimit)
                         .OrderBy(p => p.Id)
+                        .Include("Objectives")
                         .ToListAsync();
                 }
             }

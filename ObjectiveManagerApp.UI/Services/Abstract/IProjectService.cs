@@ -6,6 +6,7 @@ namespace ObjectiveManagerApp.UI.Services.Abstract
     {
         IAsyncEnumerable<IEnumerable<Project>> GetChunkAsync();
         Task<IEnumerable<Project>> GetAllAsync();
+        Task<IEnumerable<Project>> GetByUserIdAsync(int userId);
         Task<Project> GetByIdAsync(int id);
     }
 }

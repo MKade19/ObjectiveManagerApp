@@ -14,6 +14,7 @@ namespace ObjectiveManagerApp.Common.Models
         public DateTime UpdatedDate { get; set; }
         public Project Project { get; set; }
         public Category Category { get; set; }
+
         public ICollection<User> Editors { get; set; }
 
         public Objective(int id, string name, string description, DateTime createdDate, DateTime updatedDate)

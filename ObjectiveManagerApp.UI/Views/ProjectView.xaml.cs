@@ -1,4 +1,5 @@
-﻿using ObjectiveManagerApp.UI.Services.Abstract;
+﻿using ObjectiveManagerApp.UI.EventAggregation;
+using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.ViewModels;
 using System.Windows.Controls;
 
@@ -13,12 +14,12 @@ namespace ObjectiveManagerApp.UI.Views
         {
             InitializeComponent();
             DataContext = new ProjectViewModel(projectService);
-            Loaded += ProjectView_Loaded;
+            EventAggregator.Instance.GoToProjects += ProjectView_GoToProjects; ;
         }
 
-        private async void ProjectView_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private async void ProjectView_GoToProjects(object? sender, NavigationEventArgs e)
         {
-            await ((ProjectViewModel)DataContext).LoadUserProjectsAsync();
+            await ((ProjectViewModel)DataContext).LoadUserProjectsAsync(e.Id);
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

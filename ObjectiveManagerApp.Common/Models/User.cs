@@ -1,11 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace ObjectiveManagerApp.Common.Models
+﻿namespace ObjectiveManagerApp.Common.Models
 {
     public class User
     {
-        public int Id { get; set; }
-
+        public int Id { get; set; } = -1;
         public string Username { get; set; } = string.Empty;
 
         public string Fullname { get; set; } = string.Empty;

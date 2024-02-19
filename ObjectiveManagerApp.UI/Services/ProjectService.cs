@@ -25,6 +25,11 @@ namespace ObjectiveManagerApp.UI.Services
             return await _projectRepository.GetAllAsync();
         }
 
+        public async Task<IEnumerable<Project>> GetByUserIdAsync(int userId)
+        {
+            return await _projectRepository.GetByUserIdAsync(userId);
+        }
+
         public async Task<Project> GetByIdAsync(int id)
         {
             return await _projectRepository.GetByIdAsync(id);
