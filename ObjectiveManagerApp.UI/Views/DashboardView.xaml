@@ -9,7 +9,7 @@
              xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:DashboardViewModel}"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="500" d:DesignWidth="1100">
     <UserControl.Resources>
         <converters:BoolToCollapsedConverter x:Key="BoolToCollapsedConverter"/>
         <converters:BoolToVisibleConverter x:Key="BoolToVisibleConverter"/>
@@ -19,32 +19,78 @@
     <Grid>
         <Grid x:Name="DashboardGrid">
             <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="50"/>
                 <RowDefinition/>
-                <RowDefinition MaxHeight="100"/>
+                <RowDefinition MaxHeight="50"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition MaxWidth="400"/>
+            </Grid.ColumnDefinitions>
 
+            <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Path=Project.Name}" 
+                           Margin="0,0,10,0"
+                           HorizontalAlignment="Center" 
+                           FontSize="22" 
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="{DynamicResource DashboardViewTitle}" 
+                           HorizontalAlignment="Center"
+                           FontSize="22" 
+                           VerticalAlignment="Center"/> 
+            </StackPanel>
 
-            <ListView ItemsSource="{Binding CategorizedTasks}">
+            <ListView Grid.Row="1" ItemsSource="{Binding CategorizedObjectives}" FontSize="16" Background="#FFDEDEDE">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            
+                        </StackPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition MaxHeight="200"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Text="{Binding Category}" />
-
-                            <ListView Grid.Row="1" 
-                                      ItemsSource="{Binding Tasks}" />
-                        </Grid>
+                        <Border BorderThickness="2">
+                            <Grid Margin="0,0,20,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition MaxHeight="200"/>
+                                    <RowDefinition MaxHeight="400"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding Path=Category.Name}" FontSize="18" />
+                                <ListView Grid.Row="1" 
+                                          ItemsSource="{Binding Path=Objectives}" 
+                                          FontSize="16" SelectionChanged="ListView_SelectionChanged" />
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             
-            
-            
-            
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="{DynamicResource CreateCaption}" Command="{Binding CreateObjectiveCommand}" Margin="0,0,20,0" FontSize="16"/>
+                <Button Content="{DynamicResource EditCaption}" Command="{Binding EditObjectiveCommand}" FontSize="16"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="{DynamicResource CreateFormTitle}" FontSize="20"/>
+                    <TextBlock Text="{DynamicResource EditFormTitle}" FontSize="20"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label Margin="0,0,10,0" Target="{Binding ElementName=NameTextBox}" Content="{DynamicResource NameLabel}" FontSize="16"/>
+                    <TextBox MinWidth="150" x:Name="NameTextBox"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label Margin="0,0,10,0" Target="{Binding ElementName=DescriptionTextBox}" Content="{DynamicResource DescriptionLabel}" FontSize="16"/>
+                    <TextBox MinWidth="150" x:Name="DescriptionTextBox"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label Margin="0,0,10,0" Target="{Binding ElementName=NameTextBox}" Content="{DynamicResource CategoryLabel}" FontSize="16"/>
+                    <ComboBox ItemsSource="{Binding Categories}" MinWidth="150" FontSize="16"/>
+                </StackPanel>
+                <Button Content="{DynamicResource SubmitCaption}" Command="{Binding SubmitObjectiveCommand}" FontSize="16" HorizontalAlignment="Center"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

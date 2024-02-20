@@ -35,7 +35,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                return await db.Projects.FirstAsync(p => p.Id == id);
+                return await db.Projects.Include("Objectives").FirstAsync(p => p.Id == id);
             }
         }
 

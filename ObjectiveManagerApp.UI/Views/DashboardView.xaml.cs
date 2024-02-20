@@ -21,11 +21,17 @@ namespace ObjectiveManagerApp.UI.Views
         {
             await ((DashboardViewModel)DataContext).LoadCategoriesAsync();
             await ((DashboardViewModel)DataContext).LoadProjectAsync(e.Id);
+            ((DashboardViewModel)DataContext).MakeCategorizedObjectives();
+        }
 
-            var t = new Models.CategorizedTaskList() { Category = "category #1" };
-            t.Tasks.Add("task #1");
-            t.Tasks.Add("task #2");
-            ((DashboardViewModel)DataContext).CategorizedTasks.Add(t);
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems[0] == null)
+            {
+                return;
+            }
+
+            ((DashboardViewModel)DataContext).ChangeActiveObjective(e.AddedItems[0]);
         }
     }
 }
