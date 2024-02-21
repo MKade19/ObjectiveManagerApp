@@ -10,33 +10,47 @@ namespace ObjectiveManagerApp.UI.ViewModels
     {
         private readonly ICategoryService _categoryService;
         private readonly IProjectService _projectService;
+        private readonly IObjectiveService _objectiveService;
+
         private ObservableCollection<Category> _categories = new ObservableCollection<Category>();
-        private ObservableCollection<CategorizedObjectiveList> _categorizedTasks;
+        private ObservableCollection<CategorizedObjectiveList> _categorizedObjectives;
+        private CategorizedObjectiveList _currentCategorizedObjective;
         private Objective _activeObjective;
         private bool _isObjectiveCreated = true;
+        private bool _isLoading = false;
         private Project _project = new Project();
 
-        public DelegateCommand CreateObjectiveCommand { get; }
-        public DelegateCommand EditObjectiveCommand { get; }
+        public DelegateCommand CreateEditObjectiveCommand { get; }
+        public DelegateCommand BackCommand { get; }
         public DelegateCommand SubmitObjectiveCommand { get; }
 
-        public DashboardViewModel(ICategoryService categoryService, IProjectService projectService)
+        public DashboardViewModel(ICategoryService categoryService, IProjectService projectService, IObjectiveService objectiveService)
         {
             _categoryService = categoryService;
             _projectService = projectService;
+            _objectiveService = objectiveService;
             CategorizedObjectives = new ObservableCollection<CategorizedObjectiveList>();
-            CreateObjectiveCommand = new DelegateCommand(CreateObjectiveCommand_Executed);
-            EditObjectiveCommand = new DelegateCommand(EditObjectiveCommand_Executed);
+            CreateEditObjectiveCommand = new DelegateCommand(CreateEditObjectiveCommand_Executed);
             SubmitObjectiveCommand = new DelegateCommand(SubmitObjectiveCommand_Executed);
         }
 
         public ObservableCollection<CategorizedObjectiveList> CategorizedObjectives
         {
-            get => _categorizedTasks;
+            get => _categorizedObjectives;
             set
             {
-                _categorizedTasks = value;
+                _categorizedObjectives = value;
                 OnPropertyChanged(nameof(CategorizedObjectives));
+            }
+        }
+
+        public CategorizedObjectiveList CurrentCategorizedObjective
+        {
+            get => _currentCategorizedObjective;
+            set
+            {
+                _currentCategorizedObjective = value;
+                OnPropertyChanged(nameof(CurrentCategorizedObjective));
             }
         }
 
@@ -70,6 +84,16 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+
         public ObservableCollection<Category> Categories
         {
             get => _categories;
@@ -82,6 +106,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
         public async Task LoadCategoriesAsync()
         { 
+            Categories.Clear();
             var categoriesData = await _categoryService.GetAllAsync();
 
             foreach (var category in categoriesData)
@@ -115,19 +140,53 @@ namespace ObjectiveManagerApp.UI.ViewModels
             ActiveObjective = (Objective)objectiveData;
         }
 
-        public void CreateObjectiveCommand_Executed(object sender)
+        public void ChangeCurrentCategorizedObjective(object catigorizedObjectiveData)
         {
-
+            CurrentCategorizedObjective = (CategorizedObjectiveList)catigorizedObjectiveData;
         }
 
-        public void EditObjectiveCommand_Executed(object sender)
+        public void CreateEditObjectiveCommand_Executed(object sender)
         {
+            if (!IsObjectiveCreated)
+            {
+                ActiveObjective = new Objective();
+            }
 
+            IsObjectiveCreated = !IsObjectiveCreated;
         }
 
-        public void SubmitObjectiveCommand_Executed(object sender)
+        public async void SubmitObjectiveCommand_Executed(object sender)
         {
+            try
+            {
+                IsLoading = true;
 
+                if (IsObjectiveCreated)
+                {
+                    await CreateObjectiveAsync();
+                }
+                else
+                {
+                    await EditObjectiveAsync();
+                }
+
+                await LoadProjectAsync(Project.Id);
+                MakeCategorizedObjectives();
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        private async Task CreateObjectiveAsync()
+        {
+            await _objectiveService.CreateOneAsync(ActiveObjective);
+        }
+
+        private async Task EditObjectiveAsync()
+        {
+            await _objectiveService.CreateOneAsync(ActiveObjective);
         }
     }
 }

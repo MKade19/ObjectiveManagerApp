@@ -1,4 +1,4 @@
-﻿namespace ObjectiveManagerApp.UI.EventAggregation
+﻿namespace ObjectiveManagerApp.UI.EventAggregation.EventArgsTypes
 {
     public class NavigationEventArgs : EventArgs
     {

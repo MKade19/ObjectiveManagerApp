@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ObjectiveManagerApp.Common.Models;
 
 namespace ObjectiveManagerApp.UI.Services.Abstract
 {
     public interface IObjectiveService
     {
+        Task<IEnumerable<Objective>> GetObjectivesByUsername(string username);
+        Task CreateOneAsync(Objective objective);
+        Task EditByIdAsync(Objective objective);
     }
 }

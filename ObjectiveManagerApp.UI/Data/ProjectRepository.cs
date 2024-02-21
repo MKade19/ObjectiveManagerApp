@@ -2,6 +2,8 @@
 using ObjectiveManagerApp.Common.Models;
 using ObjectiveManagerApp.UI.Constants;
 using Microsoft.EntityFrameworkCore;
+using System.Security.AccessControl;
+using ObjectiveManagerApp.UI.Exceptions;
 
 namespace ObjectiveManagerApp.UI.Data
 {
@@ -13,9 +15,16 @@ namespace ObjectiveManagerApp.UI.Data
         {
             Db = db;
         }
-        public Task CreateOneAsync(Project project)
+        public async Task CreateOneAsync(Project project)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext db = Db)
+            {
+                project.CreatedDate = DateTime.Now;
+                project.UpdatedDate = DateTime.Now;
+
+                await db.Projects.AddAsync(project);
+                await db.SaveChangesAsync();
+            }
         }
 
         public Task DeleteOneAsync(Project project)
@@ -27,7 +36,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                return await db.Projects.Include("Objectives").ToListAsync();
+                return await db.Projects.Include(nameof(Project.Objectives)).ToListAsync();
             }
         }
 
@@ -35,7 +44,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                return await db.Projects.Include("Objectives").FirstAsync(p => p.Id == id);
+                return await db.Projects.Include(nameof(Project.Objectives)).FirstAsync(p => p.Id == id);
             }
         }
 
@@ -58,15 +67,24 @@ namespace ObjectiveManagerApp.UI.Data
                     yield return await db.Projects.Skip(i)
                         .Take(DataConstants.RecordsLimit)
                         .OrderBy(p => p.Id)
-                        .Include("Objectives")
+                        .Include(nameof(Project.Objectives))
                         .ToListAsync();
                 }
             }
         }
 
-        public Task UpdateByIdAsync(Project project)
+        public async Task UpdateByIdAsync(Project project)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext db = Db)
+            {
+                //ADD ERROR MESSAGE
+                Project projectFromDb = await db.Projects.FirstOrDefaultAsync(p => p.Id == project.Id) ?? throw new NotFoundException("");
+                projectFromDb.Name = project.Name;
+                projectFromDb.Description = project.Description;
+                projectFromDb.UpdatedDate = DateTime.Now;
+
+                await db.SaveChangesAsync();
+            }
         }
     }
 }

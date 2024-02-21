@@ -34,7 +34,7 @@ namespace ObjectiveManagerApp.UI
                 .UseSerilog((host, loggerConfiguration) =>
                 {
                     loggerConfiguration
-                    .WriteTo.File("log.txt")
+                    .WriteTo.File(LogFileName)
                     .MinimumLevel.Debug();
                 })
                 .ConfigureServices(services =>

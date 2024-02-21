@@ -4,7 +4,6 @@ using ObjectiveManagerApp.UI.EventAggregation;
 using ObjectiveManagerApp.UI.Security;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.Util;
-using System.ComponentModel;
 using System.Windows;
 
 namespace ObjectiveManagerApp.UI.ViewModels
@@ -124,10 +123,15 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
             customPrincipal.Identity = new CustomIdentity(user.Username, user.Roles);
             MessageBoxStore.Information((string)Application.Current.FindResource(SignedInMessageName));
+            EventAggregator.Instance.RaiseLoginEvent();
 
             if (customPrincipal.IsInRole(nameof(RoleTypes.ProjectManager)))
             {
                 EventAggregator.Instance.RaiseGoToProjectsEvent(user.Id);
+            }
+            else
+            {
+                EventAggregator.Instance.RaiseGoToObjectivesEvent();
             }
         }
 

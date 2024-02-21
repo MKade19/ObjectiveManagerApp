@@ -4,7 +4,7 @@ namespace ObjectiveManagerApp.UI.Security
 {
     public class CustomPrincipal : IPrincipal
     {
-        private CustomIdentity _identity;
+        private CustomIdentity? _identity;
 
         public CustomIdentity Identity
         {
@@ -20,7 +20,7 @@ namespace ObjectiveManagerApp.UI.Security
 
         public bool IsInRole(string roleName)
         {
-            return _identity.Roles.FirstOrDefault(r => r.Name == roleName) != null;
+            return _identity?.Roles.FirstOrDefault(r => r.Name == roleName) != null;
         }
         #endregion
     }

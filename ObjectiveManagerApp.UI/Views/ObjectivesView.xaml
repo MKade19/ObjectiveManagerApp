@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="ObjectiveManagerApp.UI.Views.ObjectivesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ObjectiveManagerApp.UI.Views"
+             xmlns:viewModels="clr-namespace:ObjectiveManagerApp.UI.ViewModels" 
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance viewModels:ObjectivesViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="60"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+            <TextBlock Margin="0,0,5,0" Text="{DynamicResource ObjectivesViewTitle}" FontSize="22"/>
+            <TextBlock Text="{Binding Username}" FontSize="22"/>
+        </StackPanel>
+        <DataGrid AutoGenerateColumns="False" 
+                  IsReadOnly="True" 
+                  Margin="5,5,5,5" 
+                  ItemsSource="{Binding Objectives}" 
+                  Grid.Row="1" HorizontalAlignment="Center" FontSize="16" VerticalAlignment="Top">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="{DynamicResource NameLabel}" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="{DynamicResource DescriptionLabel}" Binding="{Binding Description}"/>
+                <DataGridTextColumn Header="{DynamicResource CreatedDateLabel}" Binding="{Binding CreatedDate, StringFormat=dd/MM/yyyy}"/>
+                <DataGridTextColumn Header="{DynamicResource UpdatedDateLabel}" Binding="{Binding UpdatedDate, StringFormat=dd/MM/yyyy}"/>
+                <DataGridTextColumn Header="{DynamicResource DeadlineLabel}" Binding="{Binding Deadline, StringFormat=dd/MM/yyyy}"/>
+                <DataGridTextColumn Header="{DynamicResource ProjectLabel}" Binding="{Binding Project}"/>
+                <DataGridTextColumn Header="{DynamicResource CategoryLabel}" Binding="{Binding Category}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

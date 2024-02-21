@@ -13,13 +13,18 @@ namespace ObjectiveManagerApp.UI.ViewModels
         private Project _activeProject = new Project();
         private bool _isLoading = false;
         private bool _isSelected = false;
+        private bool _isCreated = true;
 
         public DelegateCommand GoToDashboardCommand { get; }
+        public DelegateCommand ToggleCreateModeCommand { get; }
+        public DelegateCommand SubmitCommand { get; }
 
         public ProjectViewModel(IProjectService projectService)
         {
             _projectService = projectService;
             GoToDashboardCommand = new DelegateCommand(GoToDashboardCommand_Executed);
+            ToggleCreateModeCommand = new DelegateCommand(ToggleCreateModeCommand_Executed);
+            SubmitCommand = new DelegateCommand(SubmitCommand_Executed);
         }
 
         public ObservableCollection<Project> Projects
@@ -63,6 +68,16 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
+        public bool IsCreated
+        {
+            get => _isCreated;
+            set
+            {
+                _isCreated = value;
+                OnPropertyChanged(nameof(IsCreated));
+            }
+        }
+
         public async Task LoadUserProjectsAsync(int id)
         {
             try
@@ -79,12 +94,43 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
         public void ChangeActiveProject(object newProject)
         {
+            IsCreated = false;
             ActiveProject = (Project)newProject;
         }
 
         public void GoToDashboardCommand_Executed(object sender)
         {
             EventAggregator.Instance.RaiseGoToDashboardEvent(ActiveProject.Id);
+        }
+
+        public void ToggleCreateModeCommand_Executed(object sender)
+        {
+            ActiveProject = new Project();
+            IsCreated = true;
+        }
+
+        public async void SubmitCommand_Executed(object sender)
+        {
+            try
+            {
+                IsLoading = true;
+
+                if(IsCreated)
+                {
+                    await _projectService.CreateOneAsync(ActiveProject);
+                }
+                else
+                {
+                    await _projectService.EditByIdAsync(ActiveProject);
+                }
+
+                await LoadUserProjectsAsync(ActiveProject.ManagerId);
+                ActiveProject = new Project();
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
     }
 }

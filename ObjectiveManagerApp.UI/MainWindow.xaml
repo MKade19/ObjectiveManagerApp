@@ -5,25 +5,40 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:ObjectiveManagerApp.UI.ViewModels" 
+        xmlns:converters="clr-namespace:ObjectiveManagerApp.UI.Converters"
         xmlns:local="clr-namespace:ObjectiveManagerApp.UI" 
         xmlns:views="clr-namespace:ObjectiveManagerApp.UI.Views"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
         Title="{DynamicResource MainWindowTitle}" MinHeight="600" MinWidth="1200">
+    <Window.Resources>
+        <converters:BoolToCollapsedConverter x:Key="BoolToCollapsedConverter"/>
+        <converters:BoolToVisibleConverter x:Key="BoolToVisibleConverter"/>
+        <converters:IntToVisibleConverter x:Key="IntToVisibleConverter"/>
+        <converters:IntToCollapsedConverted x:Key="IntToCollapsedConverted"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition MinHeight="20" MaxHeight="30"/>
+            <RowDefinition MinHeight="30" MaxHeight="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Menu Panel.ZIndex="-1" Background="#FFDEDEDE">
-            <MenuItem Command="{Binding GoToProjectsTabCommand}" Header="{DynamicResource ProjectsCaption}"/>
-            <MenuItem Command="{Binding GoToDashboardTabCommand}" Header="{DynamicResource DashboardCaption}"/>
-            <MenuItem Command="{Binding LogoutCommand}" Header="{DynamicResource LogoutCaption}"/>
+        <Menu Visibility="{Binding IsAuthenticated, Converter={StaticResource BoolToVisibleConverter}}" 
+              Padding="0,5,0,5" 
+              Panel.ZIndex="-1" 
+              Background="#FF91CAFF">
+            <MenuItem Visibility="{Binding IsProjectManager, Converter={StaticResource BoolToVisibleConverter}}" 
+                Margin="5,0,5,0" 
+                Command="{Binding GoToProjectsTabCommand}" 
+                Header="{DynamicResource ProjectsCaption}" 
+                FontSize="14"/>
+            <MenuItem Margin="5,0,5,0" Command="{Binding GoToObjectivesTabCommand}" Header="{DynamicResource ObjectivesCaption}"/>
+            <MenuItem Margin="5,0,5,0" Command="{Binding LogoutCommand}" Header="{DynamicResource LogoutCaption}"/>
         </Menu>
         <TabControl SelectedIndex="{Binding ActiveTabIndex}" Grid.Row="1">
             <TabItem x:Name="SignInTab"/>
             <TabItem x:Name="ProjectsTab"/>
             <TabItem x:Name="DashboardTab"/>
+            <TabItem x:Name="ObjectivesTab"/>
         </TabControl>
     </Grid>
 </mah:MetroWindow>

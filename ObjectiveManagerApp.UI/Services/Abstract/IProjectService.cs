@@ -8,5 +8,7 @@ namespace ObjectiveManagerApp.UI.Services.Abstract
         Task<IEnumerable<Project>> GetAllAsync();
         Task<IEnumerable<Project>> GetByUserIdAsync(int userId);
         Task<Project> GetByIdAsync(int id);
+        Task CreateOneAsync(Project project);
+        Task EditByIdAsync(Project project);
     }
 }

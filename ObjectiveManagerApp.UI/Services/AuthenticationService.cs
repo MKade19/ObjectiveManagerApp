@@ -22,7 +22,7 @@ namespace ObjectiveManagerApp.UI.Services
 
         public async Task<User> AuthenticateUserAsync(InternalUserData userFromUi)
         {
-            InternalUserData userData = await _userRepository.GetUserByUsernameAsync(userFromUi.Username);
+            InternalUserData userData = await _userRepository.GetByUsernameAsync(userFromUi.Username);
 
             if (userData == null)
             {

@@ -1,6 +1,8 @@
 ﻿using ObjectiveManagerApp.Common.Models;
+using ObjectiveManagerApp.UI.Data;
 using ObjectiveManagerApp.UI.Data.Abstract;
 using ObjectiveManagerApp.UI.Services.Abstract;
+using System.Security.AccessControl;
 
 namespace ObjectiveManagerApp.UI.Services
 {
@@ -33,6 +35,16 @@ namespace ObjectiveManagerApp.UI.Services
         public async Task<Project> GetByIdAsync(int id)
         {
             return await _projectRepository.GetByIdAsync(id);
+        }
+
+        public async Task CreateOneAsync(Project project)
+        {
+            await _projectRepository.CreateOneAsync(project);
+        }
+
+        public async Task EditByIdAsync(Project project)
+        {
+            await _projectRepository.UpdateByIdAsync(project);
         }
     }
 }

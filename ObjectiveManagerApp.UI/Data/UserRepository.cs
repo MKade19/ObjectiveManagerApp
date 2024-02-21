@@ -62,7 +62,7 @@ namespace ObjectiveManagerApp.UI.Data
             }
         }
 
-        public async Task<InternalUserData> GetUserByUsernameAsync(string username)
+        public async Task<InternalUserData> GetByUsernameAsync(string username)
         {
             using (ApplicationContext db = Db)
             {

@@ -1,4 +1,5 @@
 ﻿using ObjectiveManagerApp.UI.EventAggregation;
+using ObjectiveManagerApp.UI.EventAggregation.EventArgsTypes;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.ViewModels;
 using System.Windows.Controls;

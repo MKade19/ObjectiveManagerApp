@@ -12,18 +12,32 @@ namespace ObjectiveManagerApp.Common.Models
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public DateTime Deadline { get; set; }
+
         public Project Project { get; set; }
+
         public Category Category { get; set; }
 
-        public ICollection<User> Editors { get; set; }
+        public int UserId { get; set; }
 
-        public Objective(int id, string name, string description, DateTime createdDate, DateTime updatedDate)
+        public Objective(int id, string name, string description, DateTime createdDate, DateTime updatedDate, DateTime deadline, int userId)
         {
             Id = id;
             Name = name;
             Description = description;
             CreatedDate = createdDate;
             UpdatedDate = updatedDate;
+            Deadline = deadline;
+            UserId = userId;
+        }
+
+        public Objective()
+        {
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

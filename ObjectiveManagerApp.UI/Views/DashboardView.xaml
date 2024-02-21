@@ -40,7 +40,11 @@
                            VerticalAlignment="Center"/> 
             </StackPanel>
 
-            <ListView Grid.Row="1" ItemsSource="{Binding CategorizedObjectives}" FontSize="16" Background="#FFDEDEDE">
+            <ListView ItemsSource="{Binding CategorizedObjectives}" 
+                      x:Name="CategorizedObjectivesList"
+                      Grid.Row="1" 
+                      FontSize="16" 
+                      Background="#FFDEDEDE" SelectionChanged="ListView_SelectionChanged_1">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -68,29 +72,53 @@
             </ListView>
             
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="{DynamicResource CreateCaption}" Command="{Binding CreateObjectiveCommand}" Margin="0,0,20,0" FontSize="16"/>
-                <Button Content="{DynamicResource EditCaption}" Command="{Binding EditObjectiveCommand}" FontSize="16"/>
+                <Button Content="{DynamicResource CreateEditCaption}" MinWidth="150" Command="{Binding CreateObjectiveCommand}" Margin="0,0,20,0" FontSize="16"/>
             </StackPanel>
 
-            <StackPanel Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="{DynamicResource CreateFormTitle}" FontSize="20"/>
-                    <TextBlock Text="{DynamicResource EditFormTitle}" FontSize="20"/>
+                    <TextBlock Text="{DynamicResource CreateFormTitle}" Visibility="{Binding IsObjectiveCreated, Converter={StaticResource BoolToVisibleConverter}}" FontSize="20"/>
+                    <TextBlock Text="{DynamicResource EditFormTitle}" Visibility="{Binding IsObjectiveCreated, Converter={StaticResource BoolToCollapsedConverter}}" FontSize="20"/>
                 </StackPanel>
-                <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Label Margin="0,0,10,0" Target="{Binding ElementName=NameTextBox}" Content="{DynamicResource NameLabel}" FontSize="16"/>
-                    <TextBox MinWidth="150" x:Name="NameTextBox"/>
-                </StackPanel>
-                <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Label Margin="0,0,10,0" Target="{Binding ElementName=DescriptionTextBox}" Content="{DynamicResource DescriptionLabel}" FontSize="16"/>
-                    <TextBox MinWidth="150" x:Name="DescriptionTextBox"/>
-                </StackPanel>
-                <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Label Margin="0,0,10,0" Target="{Binding ElementName=NameTextBox}" Content="{DynamicResource CategoryLabel}" FontSize="16"/>
-                    <ComboBox ItemsSource="{Binding Categories}" MinWidth="150" FontSize="16"/>
+                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Margin="0,0,10,0" Target="{Binding ElementName=NameTextBox}" Content="{DynamicResource NameLabel}" FontSize="16"/>
+                        <TextBox Text="{Binding ActiveObjective.Name}" MinWidth="150"  x:Name="NameTextBox" FontSize="16"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Margin="0,0,10,0" Target="{Binding ElementName=DescriptionTextBox}" Content="{DynamicResource DescriptionLabel}" FontSize="16"/>
+                        <TextBox Text="{Binding ActiveObjective.Description}" MinWidth="150" x:Name="DescriptionTextBox" FontSize="16"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Margin="0,0,10,0" Content="{DynamicResource DeadlineLabel}" FontSize="16" HorizontalAlignment="Right"/>
+                        <DatePicker SelectedDate="{Binding ActiveObjective.Deadline}" MinWidth="150" FontSize="16"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Margin="0,0,10,0" Content="{DynamicResource CategoryLabel}" FontSize="16" HorizontalAlignment="Right"/>
+                        <ComboBox SelectedItem="{Binding CurrentCategorizedObjective.Category}" ItemsSource="{Binding Categories}" MinWidth="150" FontSize="16"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Margin="0,0,10,0" Content="{DynamicResource UserLabel}" FontSize="16" HorizontalAlignment="Right"/>
+                        <ComboBox  ItemsSource="{Binding Categories}" MinWidth="150" FontSize="16"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Margin="0,0,10,0" Content="{DynamicResource CreatedDateLabel}" FontSize="16" HorizontalAlignment="Right"/>
+                        <DatePicker IsEnabled="False" SelectedDate="{Binding ActiveObjective.CreatedDate}" MinWidth="150" FontSize="16"/>
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Label Margin="0,0,10,0" Content="{DynamicResource UpdatedDateLabel}" FontSize="16" HorizontalAlignment="Right"/>
+                        <DatePicker IsEnabled="False" SelectedDate="{Binding ActiveObjective.UpdatedDate}" MinWidth="150" FontSize="16"/>
+                    </StackPanel>
                 </StackPanel>
                 <Button Content="{DynamicResource SubmitCaption}" Command="{Binding SubmitObjectiveCommand}" FontSize="16" HorizontalAlignment="Center"/>
             </StackPanel>
+        </Grid>
+        <Grid Panel.ZIndex="-1" 
+              MinHeight="400" 
+              MinWidth="800" 
+              Background="#7FFFFFFF"
+              Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibleConverter}}">
+            <mah:ProgressRing IsActive="True" Height="315" Width="330" Opacity="0.7"/>
         </Grid>
     </Grid>
 </UserControl>
