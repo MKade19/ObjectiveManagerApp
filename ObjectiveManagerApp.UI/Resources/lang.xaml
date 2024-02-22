@@ -38,6 +38,7 @@
     <v:String x:Key="GoToProjectCaption">Go to project</v:String>
     <v:String x:Key="CreateCaption">Create</v:String>
     <v:String x:Key="EditCaption">Edit</v:String>
+    <v:String x:Key="DeleteCaption">Delete</v:String>
     <v:String x:Key="CreateEditCaption">Create/Edit</v:String>
     <!--Project view-->
     <v:String x:Key="ProjectListIsEmpty">There is no projects...</v:String>
@@ -48,8 +49,14 @@
     <v:String x:Key="IncorrectPasswordMessage">Incorrect password.</v:String>
     <v:String x:Key="RoleNotFoundMessage">There is no such a role.</v:String>
     <v:String x:Key="PrincipalIsNotSetMessage">The application's default thread principal must be set to a CustomPrincipal object on startup.</v:String>
+    <v:String x:Key="ObjectiveNotFoundErrorMessage">There is no such a objective.</v:String>
+    <v:String x:Key="ProjectNotFoundErrorMessage">There is no such a project.</v:String>
     <!--Information messages-->
     <v:String x:Key="SignedUpMessage">You have signed up!</v:String>
     <v:String x:Key="SignedInMessage">You have signed in!</v:String>
     <v:String x:Key="LogoutMessage">You have logged out!</v:String>
+    <v:String x:Key="DataSavedMessage">Data was saved!</v:String>
+    <v:String x:Key="ProjectDeleteMessage">Project was deleted!</v:String>
+    <!--Confirmation messages-->
+    <v:String x:Key="DeleteConfirmationMessage">Are you sure to delete this project?</v:String>
 </ResourceDictionary>

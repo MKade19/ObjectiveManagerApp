@@ -2,12 +2,14 @@
 using ObjectiveManagerApp.Common.Models;
 using Microsoft.EntityFrameworkCore;
 using ObjectiveManagerApp.UI.Exceptions;
+using System.Windows;
 
 namespace ObjectiveManagerApp.UI.Data
 {
     public class ObjectiveRepository : IObjectiveRepository
     {
         private readonly ApplicationContext Db;
+        private const string ObjectiveNotFoundErrorMessageName = "ObjectiveNotFoundErrorMessage";
 
         public ObjectiveRepository(ApplicationContext db)
         {
@@ -26,9 +28,16 @@ namespace ObjectiveManagerApp.UI.Data
             }
         }
 
-        public Task DeleteOneAsync(Objective objective)
+        public async Task DeleteOneAsync(Objective objective)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext db = Db)
+            {
+                await Task.Run(() =>
+                {
+                    db.Objectives.Remove(objective);
+                });
+                await db.SaveChangesAsync();
+            }
         }
 
         public Task<IEnumerable<Objective>> GetAllAsync()
@@ -50,8 +59,8 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                //ADD ERROR MESSAGE
-                Objective objectiveFromDb = await db.Objectives.FirstOrDefaultAsync() ?? throw new NotFoundException("");
+                Objective objectiveFromDb = await db.Objectives.FirstOrDefaultAsync() 
+                    ?? throw new NotFoundException((string)Application.Current.FindResource(ObjectiveNotFoundErrorMessageName));
                 objectiveFromDb.Name = objective.Name;
                 objectiveFromDb.Description = objective.Description;
                 objective.UpdatedDate = DateTime.Now;

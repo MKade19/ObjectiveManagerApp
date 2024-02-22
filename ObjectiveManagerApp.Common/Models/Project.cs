@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace ObjectiveManagerApp.Common.Models
 {
@@ -14,19 +15,29 @@ namespace ObjectiveManagerApp.Common.Models
         public DateTime UpdatedDate {  get; set; }
         public int ManagerId { get; set; }
 
-        //[ForeignKey("Id")]
         public ICollection<Objective> Objectives { get; set; }
 
-        public Project(int id, string name, string description, DateTime createdDate, DateTime updatedDate)
+        public Project(int id, string name, string description, DateTime createdDate, DateTime updatedDate, int managerId)
         {
             Id = id;
             Name = name;
             Description = description;
             CreatedDate = createdDate;
             UpdatedDate = updatedDate;
+            ManagerId = managerId;
         }
 
         public Project() { }
+
+        public Project(Project project) 
+        {
+            Id = project.Id;
+            Name = project.Name;
+            Description = project.Description;
+            CreatedDate = project.CreatedDate;
+            UpdatedDate = project.UpdatedDate;
+            ManagerId = project.ManagerId;
+        }
 
         public override string ToString()
         {

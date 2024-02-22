@@ -10,5 +10,6 @@ namespace ObjectiveManagerApp.UI.Services.Abstract
         Task<Project> GetByIdAsync(int id);
         Task CreateOneAsync(Project project);
         Task EditByIdAsync(Project project);
+        Task DeleteOneAsync(Project project);
     }
 }

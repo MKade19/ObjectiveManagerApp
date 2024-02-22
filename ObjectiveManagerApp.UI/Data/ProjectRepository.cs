@@ -1,15 +1,16 @@
-﻿using ObjectiveManagerApp.UI.Data.Abstract;
+﻿using Microsoft.EntityFrameworkCore;
 using ObjectiveManagerApp.Common.Models;
 using ObjectiveManagerApp.UI.Constants;
-using Microsoft.EntityFrameworkCore;
-using System.Security.AccessControl;
+using ObjectiveManagerApp.UI.Data.Abstract;
 using ObjectiveManagerApp.UI.Exceptions;
+using System.Windows;
 
 namespace ObjectiveManagerApp.UI.Data
 {
     public class ProjectRepository : IProjectRepository
     {
         private readonly ApplicationContext Db;
+        private const string ProjectNotFoundErrorMessageName = "ProjectNotFoundErrorMessage";
 
         public ProjectRepository(ApplicationContext db)
         {
@@ -27,9 +28,16 @@ namespace ObjectiveManagerApp.UI.Data
             }
         }
 
-        public Task DeleteOneAsync(Project project)
+        public async Task DeleteOneAsync(Project project)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext db = Db)
+            {
+                await Task.Run(() =>
+                {
+                    db.Projects.Remove(project);
+                });
+                await db.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Project>> GetAllAsync()
@@ -77,8 +85,9 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                //ADD ERROR MESSAGE
-                Project projectFromDb = await db.Projects.FirstOrDefaultAsync(p => p.Id == project.Id) ?? throw new NotFoundException("");
+                Project projectFromDb = await db.Projects.
+                    FirstOrDefaultAsync(p => p.Id == project.Id) 
+                    ?? throw new NotFoundException((string)Application.Current.FindResource(ProjectNotFoundErrorMessageName));
                 projectFromDb.Name = project.Name;
                 projectFromDb.Description = project.Description;
                 projectFromDb.UpdatedDate = DateTime.Now;

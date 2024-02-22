@@ -3,6 +3,7 @@ using ObjectiveManagerApp.UI.EventAggregation;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.Util;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace ObjectiveManagerApp.UI.ViewModels
 {
@@ -14,10 +15,14 @@ namespace ObjectiveManagerApp.UI.ViewModels
         private bool _isLoading = false;
         private bool _isSelected = false;
         private bool _isCreated = true;
+        private const string DataSavedMessageName = "DataSavedMessage";
+        private const string ProjectDeleteMessageName = "ProjectDeleteMessage";
+        private const string DeleteConfirmationMessageName = "DeleteConfirmationMessage";
 
         public DelegateCommand GoToDashboardCommand { get; }
         public DelegateCommand ToggleCreateModeCommand { get; }
         public DelegateCommand SubmitCommand { get; }
+        public DelegateCommand DeleteCommand { get; }
 
         public ProjectViewModel(IProjectService projectService)
         {
@@ -25,6 +30,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
             GoToDashboardCommand = new DelegateCommand(GoToDashboardCommand_Executed);
             ToggleCreateModeCommand = new DelegateCommand(ToggleCreateModeCommand_Executed);
             SubmitCommand = new DelegateCommand(SubmitCommand_Executed);
+            DeleteCommand = new DelegateCommand(DeleteCommand_Executed);
         }
 
         public ObservableCollection<Project> Projects
@@ -43,6 +49,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
             set
             {
                 _activeProject = value;
+                var proj = Projects;
                 OnPropertyChanged(nameof(ActiveProject));
                 IsSelected = true;
             }
@@ -85,6 +92,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
                 IsLoading = true;
                 Projects.Clear();
                 Projects = new ObservableCollection<Project>(await _projectService.GetByUserIdAsync(id));
+                ActiveProject.ManagerId = id;
             }
             finally
             {
@@ -95,7 +103,10 @@ namespace ObjectiveManagerApp.UI.ViewModels
         public void ChangeActiveProject(object newProject)
         {
             IsCreated = false;
-            ActiveProject = (Project)newProject;
+            int managerId = ActiveProject.ManagerId;
+            var proj = Projects;
+            ActiveProject = new Project((Project)newProject);
+            ActiveProject.ManagerId = managerId;
         }
 
         public void GoToDashboardCommand_Executed(object sender)
@@ -125,12 +136,41 @@ namespace ObjectiveManagerApp.UI.ViewModels
                 }
 
                 await LoadUserProjectsAsync(ActiveProject.ManagerId);
-                ActiveProject = new Project();
+                MessageBoxStore.Information((string)Application.Current.FindResource(DataSavedMessageName));
+                ClearActiveProject();
             }
             finally
             {
                 IsLoading = false;
             }
+        }
+
+        public async void DeleteCommand_Executed(object sender)
+        {
+            try
+            {
+                IsLoading = true;
+
+                if (MessageBoxStore.Confirmation((string)Application.Current.FindResource(DeleteConfirmationMessageName)) != MessageBoxResult.OK)
+                {
+                    return;
+                }
+
+                await _projectService.DeleteOneAsync(ActiveProject);
+                await LoadUserProjectsAsync(ActiveProject.ManagerId);
+                MessageBoxStore.Information((string)Application.Current.FindResource(ProjectDeleteMessageName));
+                ClearActiveProject();
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        private void ClearActiveProject()
+        {
+            ActiveProject.Name = string.Empty;
+            ActiveProject.Description = string.Empty;
         }
     }
 }
