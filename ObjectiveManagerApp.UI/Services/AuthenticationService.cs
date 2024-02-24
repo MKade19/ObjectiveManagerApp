@@ -8,16 +8,14 @@ namespace ObjectiveManagerApp.UI.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IRoleRepository _roleRepository;
         private readonly IHashService _hashService;
         private const string IncorrectPasswordErrorMessageName = "IncorrectPasswordMessage";
         private const string UserNotFoundErrorMessageName = "UserNotFoundMessage";
 
-        public AuthenticationService(IUserRepository userRepository, IRoleRepository roleRepository,IHashService hashService)
+        public AuthenticationService(IUserRepository userRepository, IHashService hashService)
         {
             _userRepository = userRepository;
             _hashService = hashService;
-            _roleRepository = roleRepository;
         }
 
         public async Task<User> AuthenticateUserAsync(InternalUserData userFromUi)

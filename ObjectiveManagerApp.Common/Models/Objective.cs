@@ -37,7 +37,10 @@ namespace ObjectiveManagerApp.Common.Models
 
         public override string ToString()
         {
-            return Name;
+            return $"{Name} - {Description}, " +
+                $"created: {CreatedDate}" +
+                $"updated: {UpdatedDate}" +
+                $"deadline: {Deadline}";
         }
     }
 }

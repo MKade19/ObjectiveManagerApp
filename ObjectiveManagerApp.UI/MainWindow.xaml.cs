@@ -21,7 +21,7 @@ namespace ObjectiveManagerApp.UI
             EventAggregator.Instance.GoToProjects += MainWindow_GoToProjects;
             EventAggregator.Instance.Login += Mainindow_Login;
 
-            SignInTab.Content = new SignInView(authService);
+            AuthTab.Content = new AuthView(authService);
             ProjectsTab.Content = new ProjectView(projectService);
             DashboardTab.Content = new DashboardView(categoryService, projectService, objectiveService);
             ObjectivesTab.Content = new ObjectivesView(objectiveService);

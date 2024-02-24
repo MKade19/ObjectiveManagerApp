@@ -18,6 +18,7 @@
     <!--Labels-->
     <v:String x:Key="UsernameLabel">Username</v:String>
     <v:String x:Key="PasswordLabel">Password</v:String>
+    <v:String x:Key="ConfirmPasswordLabel">Confirm password</v:String>
     <v:String x:Key="NameLabel">Name</v:String>
     <v:String x:Key="FullnameLabel">Fullname</v:String>
     <v:String x:Key="ObjectiveLabel">Objective</v:String>
@@ -39,9 +40,10 @@
     <v:String x:Key="CreateCaption">Create</v:String>
     <v:String x:Key="EditCaption">Edit</v:String>
     <v:String x:Key="DeleteCaption">Delete</v:String>
+    <v:String x:Key="InfoCaption">Info</v:String>
     <v:String x:Key="CreateEditCaption">Create/Edit</v:String>
     <!--Project view-->
-    <v:String x:Key="ProjectListIsEmpty">There is no projects...</v:String>
+    <v:String x:Key="ProjectListIsEmpty">There is no projects yet...</v:String>
     <v:String x:Key="ProjectInfoHeader">Info</v:String>
     <v:String x:Key="ProjectNameLabel">Project name</v:String>
     <!--Error messages-->
@@ -57,6 +59,7 @@
     <v:String x:Key="LogoutMessage">You have logged out!</v:String>
     <v:String x:Key="DataSavedMessage">Data was saved!</v:String>
     <v:String x:Key="ProjectDeleteMessage">Project was deleted!</v:String>
+    <v:String x:Key="PasswordsDoesNotMatchMessage">Passwords does not match!</v:String>
     <!--Confirmation messages-->
     <v:String x:Key="DeleteConfirmationMessage">Are you sure to delete this project?</v:String>
 </ResourceDictionary>

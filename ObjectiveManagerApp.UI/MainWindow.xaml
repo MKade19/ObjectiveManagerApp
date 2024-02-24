@@ -10,7 +10,7 @@
         xmlns:views="clr-namespace:ObjectiveManagerApp.UI.Views"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
-        Title="{DynamicResource MainWindowTitle}" MinHeight="600" MinWidth="1200">
+        Title="{DynamicResource MainWindowTitle}" MinHeight="500" MinWidth="800">
     <Window.Resources>
         <converters:BoolToCollapsedConverter x:Key="BoolToCollapsedConverter"/>
         <converters:BoolToVisibleConverter x:Key="BoolToVisibleConverter"/>
@@ -34,8 +34,8 @@
             <MenuItem Margin="5,0,5,0" Command="{Binding GoToObjectivesTabCommand}" Header="{DynamicResource ObjectivesCaption}"/>
             <MenuItem Margin="5,0,5,0" Command="{Binding LogoutCommand}" Header="{DynamicResource LogoutCaption}"/>
         </Menu>
-        <TabControl SelectedIndex="{Binding ActiveTabIndex}" Grid.Row="1">
-            <TabItem x:Name="SignInTab"/>
+        <TabControl SelectedIndex="{Binding ActiveTabIndex}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TabItem x:Name="AuthTab"/>
             <TabItem x:Name="ProjectsTab"/>
             <TabItem x:Name="DashboardTab"/>
             <TabItem x:Name="ObjectivesTab"/>

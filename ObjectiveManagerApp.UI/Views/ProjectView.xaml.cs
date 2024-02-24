@@ -1,5 +1,4 @@
 ﻿using ObjectiveManagerApp.UI.EventAggregation;
-using ObjectiveManagerApp.UI.EventAggregation.EventArgsTypes;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.ViewModels;
 using System.Windows.Controls;
@@ -14,21 +13,23 @@ namespace ObjectiveManagerApp.UI.Views
         public ProjectView(IProjectService projectService)
         {
             InitializeComponent();
-            DataContext = new ProjectViewModel(projectService);
-            EventAggregator.Instance.GoToProjects += ProjectView_GoToProjects; ;
+            DataContext = new ProjectViewModel();
+            
+            ListTab.Content = new ProjectListView(projectService);
+            EditFormTab.Content = new ProjectEditFormView(projectService);
+
+            EventAggregator.Instance.GoToProjectEditForm += ProjectView_GoToProjectEditForm;
+            EventAggregator.Instance.GoToProjects += ProjectView_GoToProjects;
         }
 
-        private async void ProjectView_GoToProjects(object? sender, NavigationEventArgs e)
+        private void ProjectView_GoToProjects(object? sender, EventAggregation.EventArgsTypes.NavigationEventArgs e)
         {
-            await ((ProjectViewModel)DataContext).LoadUserProjectsAsync(e.Id);
+            ((ProjectViewModel)DataContext).ActiveTabIndex = 0;
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ProjectView_GoToProjectEditForm(object? sender, EventAggregation.EventArgsTypes.NavigationEventArgs e)
         {
-            if (e.AddedItems.Count > 0)
-            {
-                ((ProjectViewModel)DataContext).ChangeActiveProject(e.AddedItems[0]);
-            }
+            ((ProjectViewModel)DataContext).ActiveTabIndex = 1;
         }
     }
 }

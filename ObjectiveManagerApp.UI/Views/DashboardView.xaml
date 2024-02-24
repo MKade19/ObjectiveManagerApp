@@ -65,6 +65,8 @@
                                 <ListView Grid.Row="1" 
                                           ItemsSource="{Binding Path=Objectives}" 
                                           FontSize="16" SelectionChanged="ListView_SelectionChanged" />
+
+                                <Button Content="->"/>
                             </Grid>
                         </Border>
                     </DataTemplate>

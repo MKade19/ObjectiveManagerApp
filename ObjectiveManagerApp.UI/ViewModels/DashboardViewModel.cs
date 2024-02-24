@@ -122,9 +122,11 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
         public void MakeCategorizedObjectives()
         {
-            foreach (var category in Categories)
+            for (int i = 0; i < Categories.Count; i++)
             {
-                CategorizedObjectiveList objectiveList = new CategorizedObjectiveList() { Category = category };
+                Category category = Categories[i];
+
+                CategorizedObjectiveList objectiveList = new CategorizedObjectiveList() { Category = category, Index = i };
 
                 foreach (var objective in Project.Objectives.Where(o => o.Category.Name == category.Name))
                 {

@@ -20,8 +20,10 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                project.CreatedDate = DateTime.Now;
-                project.UpdatedDate = DateTime.Now;
+                var now = DateTime.Now;
+
+                project.CreatedDate = now;
+                project.UpdatedDate = now;
 
                 await db.Projects.AddAsync(project);
                 await db.SaveChangesAsync();
@@ -32,11 +34,14 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                await Task.Run(() =>
+                var entityToRemove = await db.Projects.FindAsync(project.Id);
+
+                if(entityToRemove != null)
                 {
+                    db.Entry(entityToRemove).State = EntityState.Detached;
                     db.Projects.Remove(project);
-                });
-                await db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
+                }
             }
         }
 

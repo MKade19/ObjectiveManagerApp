@@ -11,23 +11,19 @@ namespace ObjectiveManagerApp.UI.ViewModels
     public class SignInViewModel : ViewModelBase
     {
         private readonly IAuthenticationService _authenticationService;
-        private bool _isSigningUp = false;
-        private bool _isLoading = false;
         private InternalUserData _user = new InternalUserData();
         private const string PrincipalIsNotSetErrorMessageName = "PrincipalIsNotSetMessage";
-        private const string SignedUpMessageName = "SignedUpMessage";
-        private const string SignedInMessageName = "SignedInMessage";
 
         public DelegateCommand SubmitCommand { get; }
         public DelegateCommand GoToSignUpCommand { get; }
-        public DelegateCommand BackToSignInCommand { get; }
+        
 
         public SignInViewModel(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;
             SubmitCommand = new DelegateCommand(SubmitCommand_Executed);
             GoToSignUpCommand = new DelegateCommand(GoToSignUpCommand_Executed);
-            BackToSignInCommand = new DelegateCommand(BackToSignInCommand_Executed);
+            
         }
 
         public string Username {
@@ -49,66 +45,23 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
-        public string Fullname
-        {
-            get => _user.Fullname;
-            set
-            {
-                _user.Fullname = value;
-                OnPropertyChanged(nameof(Fullname));
-            }
-        }
-
-        public bool IsSigningUp
-        {
-            get => _isSigningUp;
-            set
-            {
-                _isSigningUp = value;
-                OnPropertyChanged(nameof(IsSigningUp));
-            }
-        }
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
         public async void SubmitCommand_Executed(object sender)
         {
             try
             {
-                IsLoading = true;
-
-                if (IsSigningUp)
-                { 
-                    await SignUpAsync();
-                }
-                else
-                {
-                    await SignInAsync();
-                }
+                EventAggregator.Instance.RaiseAuthViewIsLoadingEvent();
+                await SignInAsync();
             }
             finally
             {
-                IsLoading = false;
+                EventAggregator.Instance.RaiseAuthViewFinishedLoadingEvent();
                 ClearForm();
             }
         }
 
         public void GoToSignUpCommand_Executed(object sender)
         {
-            IsSigningUp = true;
-        }
-
-        public void BackToSignInCommand_Executed(object sender)
-        {
-            IsSigningUp = false;
+            EventAggregator.Instance.RaiseGoToSignUpEvent();
         }
 
         private async Task SignInAsync()
@@ -122,7 +75,6 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
 
             customPrincipal.Identity = new CustomIdentity(user.Username, user.Roles);
-            MessageBoxStore.Information((string)Application.Current.FindResource(SignedInMessageName));
             EventAggregator.Instance.RaiseLoginEvent();
 
             if (customPrincipal.IsInRole(nameof(RoleTypes.ProjectManager)))
@@ -135,17 +87,9 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
-        private async Task SignUpAsync()
-        {
-            await _authenticationService.RegisterAsync(_user);
-            MessageBoxStore.Information((string)Application.Current.FindResource(SignedUpMessageName));
-            IsSigningUp = false;
-        }
-
         private void ClearForm()
         {
             Username = string.Empty;
-            Fullname = string.Empty;
             EventAggregator.Instance.RaiseClearPasswordBoxEvent();
         }
     }

@@ -41,7 +41,9 @@ namespace ObjectiveManagerApp.Common.Models
 
         public override string ToString()
         {
-            return Name;
+            return $"{Name} ({Description}), " +
+                $"created: {CreatedDate.ToString("dd/MM/yyyy")}, " +
+                $"updated: {UpdatedDate.ToString("dd/MM/yyyy")}" ;
         }
     }
 }

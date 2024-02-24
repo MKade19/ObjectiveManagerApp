@@ -22,6 +22,8 @@ namespace ObjectiveManagerApp.UI.Models
             }
         }
 
+        public int Index {  get; set; }
+
         public ObservableCollection<Objective> Objectives { get; }
     }
 }
