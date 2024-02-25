@@ -20,7 +20,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                await db.InternalUserData.AddAsync(user);
+                await db.Users.AddAsync(user);
                 await db.SaveChangesAsync();
             }
         }
@@ -31,7 +31,7 @@ namespace ObjectiveManagerApp.UI.Data
             {
                 await Task.Run(() =>
                 {
-                    db.InternalUserData.Remove(user);
+                    db.Users.Remove(user);
                 });
 
                 await db.SaveChangesAsync();
@@ -42,9 +42,9 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                for (int i = 0; i < db.InternalUserData.Count(); i += DataConstants.RecordsLimit)
+                for (int i = 0; i < db.Users.Count(); i += DataConstants.RecordsLimit)
                 {
-                    yield return await db.InternalUserData.Skip(i)
+                    yield return await db.Users.Skip(i)
                         .Take(DataConstants.RecordsLimit)
                         .ToListAsync();
                 }
@@ -55,7 +55,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                InternalUserData userFromDb = await db.InternalUserData.FindAsync(user.Id) ?? new InternalUserData();
+                InternalUserData userFromDb = await db.Users.FindAsync(user.Id) ?? new InternalUserData();
 
                 userFromDb.Username = user.Username;
                 userFromDb.Fullname = user.Fullname;
@@ -66,7 +66,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                InternalUserData? user = await db.InternalUserData
+                InternalUserData? user = await db.Users
                     .Where(u => u.Username == username)
                     .Include(x => x.Roles)
                     .FirstOrDefaultAsync();
@@ -84,7 +84,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                return await db.InternalUserData.ToListAsync();
+                return await db.Users.ToListAsync();
             }
         }
 
@@ -92,7 +92,15 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                return await db.InternalUserData.FirstAsync(u => u.Id == id);
+                return await db.Users.FirstAsync(u => u.Id == id);
+            }
+        }
+
+        public async Task<IEnumerable<PublicUserData>> GetPublicDataAsync()
+        {
+            using (ApplicationContext db = Db)
+            {
+                return await db.PublicUsers.ToListAsync();
             }
         }
     }

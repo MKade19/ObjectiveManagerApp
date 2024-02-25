@@ -1,5 +1,6 @@
 ﻿using ObjectiveManagerApp.Common.Models;
 using ObjectiveManagerApp.UI.Data.Abstract;
+using ObjectiveManagerApp.UI.Security;
 using ObjectiveManagerApp.UI.Services.Abstract;
 
 namespace ObjectiveManagerApp.UI.Services
@@ -37,6 +38,8 @@ namespace ObjectiveManagerApp.UI.Services
 
         public async Task CreateOneAsync(Project project)
         {
+            project.ManagerId = ((CustomIdentity)(Thread.CurrentPrincipal.Identity)).UserId;
+
             await _projectRepository.CreateOneAsync(project);
         }
 

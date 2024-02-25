@@ -31,5 +31,10 @@ namespace ObjectiveManagerApp.UI.Services
         {
             await _objectiveRepository.UpdateByIdAsync(objective);
         }
+
+        public async Task<Objective> GetByIdAsync(int id)
+        {
+            return await _objectiveRepository.GetByIdAsync(id);
+        }
     }
 }

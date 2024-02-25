@@ -1,4 +1,5 @@
-﻿using ObjectiveManagerApp.UI.EventAggregation;
+﻿using ObjectiveManagerApp.UI.Constants;
+using ObjectiveManagerApp.UI.EventAggregation;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.ViewModels;
 using System.Windows.Controls;
@@ -14,12 +15,18 @@ namespace ObjectiveManagerApp.UI.Views
         {
             InitializeComponent();
             DataContext = new ProjectEditFormViewModel(projectService);
-            EventAggregator.Instance.GoToProjectEditForm += ProjectInfo_GoToProjectInfo;
+            EventAggregator.Instance.GoToProjectEditForm += EditForm_GoToProjectEditForm; ;
         }
 
-        private async void ProjectInfo_GoToProjectInfo(object? sender, EventAggregation.EventArgsTypes.NavigationEventArgs e)
+        private async void EditForm_GoToProjectEditForm(object? sender, EventAggregation.EventArgsTypes.FormNavigationEventArgs e)
         {
-            await ((ProjectEditFormViewModel)DataContext).LoadProjectAsync(e.Id);
+            bool isCreated = e.Type == FormType.Create;
+            ((ProjectEditFormViewModel)DataContext).IsCreated = isCreated;
+
+            if (!isCreated)
+            {
+                await ((ProjectEditFormViewModel)DataContext).LoadProjectAsync(e.Id);
+            }
         }
     }
 }

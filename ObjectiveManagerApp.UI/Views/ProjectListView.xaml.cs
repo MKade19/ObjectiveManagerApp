@@ -1,5 +1,4 @@
 ﻿using ObjectiveManagerApp.UI.EventAggregation;
-using ObjectiveManagerApp.UI.EventAggregation.EventArgsTypes;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.ViewModels;
 using System.Windows.Controls;
@@ -26,9 +25,9 @@ namespace ObjectiveManagerApp.UI.Views
             }
         }
 
-        private async void ProjectView_GoToProjects(object? sender, NavigationEventArgs e)
+        private async void ProjectView_GoToProjects(object? sender, EventArgs e)
         {
-            await ((ProjectListViewModel)DataContext).LoadUserProjectsAsync(e.Id);
+            await ((ProjectListViewModel)DataContext).LoadUserProjectsAsync();
         }
     }
 }

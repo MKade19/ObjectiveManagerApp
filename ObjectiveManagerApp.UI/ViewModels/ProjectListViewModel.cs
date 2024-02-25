@@ -1,5 +1,7 @@
 ﻿using ObjectiveManagerApp.Common.Models;
+using ObjectiveManagerApp.UI.Constants;
 using ObjectiveManagerApp.UI.EventAggregation;
+using ObjectiveManagerApp.UI.Security;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.Util;
 using System.Collections.ObjectModel;
@@ -16,6 +18,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
         private const string ProjectDeleteMessageName = "ProjectDeleteMessage";
         private const string DeleteConfirmationMessageName = "DeleteConfirmationMessage";
 
+        public DelegateCommand GoToCreateProjectCommand { get; }
         public DelegateCommand GoToEditProjectCommand { get; }
         public DelegateCommand GoToDashboardCommand { get; }
         public DelegateCommand DeleteCommand { get; }
@@ -24,6 +27,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
         {
             _projectService = projectService;
             GoToDashboardCommand = new DelegateCommand(GoToDashboardCommand_Executed);
+            GoToCreateProjectCommand = new DelegateCommand(GoToCreateProjectCommand_Executed);
             GoToEditProjectCommand = new DelegateCommand(GoToEditProjectCommand_Executed);
             DeleteCommand = new DelegateCommand(DeleteCommand_Executed);
         }
@@ -58,14 +62,15 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
-        public async Task LoadUserProjectsAsync(int id)
+        public async Task LoadUserProjectsAsync()
         {
             try
             {
                 //IsLoading = true;
                 Projects.Clear();
-                Projects = new ObservableCollection<Project>(await _projectService.GetByUserIdAsync(id));
-                ActiveProject.ManagerId = id;
+                //var jopa = ((CustomIdentity)Thread.CurrentPrincipal.Identity).UserId;
+                Projects = new ObservableCollection<Project>(await _projectService.GetByUserIdAsync(((CustomIdentity)Thread.CurrentPrincipal.Identity).UserId));
+                //ActiveProject.ManagerId = id;
             }
             finally
             {
@@ -85,7 +90,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
                 }
 
                 await _projectService.DeleteOneAsync(ActiveProject);
-                await LoadUserProjectsAsync(ActiveProject.ManagerId);
+                await LoadUserProjectsAsync();
                 MessageBoxStore.Information((string)Application.Current.FindResource(ProjectDeleteMessageName));
             }
             finally
@@ -105,9 +110,14 @@ namespace ObjectiveManagerApp.UI.ViewModels
             EventAggregator.Instance.RaiseGoToDashboardEvent(ActiveProject.Id);
         }
 
+        public void GoToCreateProjectCommand_Executed(object sender)
+        {
+            EventAggregator.Instance.RaiseGoToProjectEditFormEvent(ActiveProject.Id, FormType.Create);
+        }
+        
         public void GoToEditProjectCommand_Executed(object sender)
         {
-            EventAggregator.Instance.RaiseGoToProjectEditFormEvent(ActiveProject.Id);
+            EventAggregator.Instance.RaiseGoToProjectEditFormEvent(ActiveProject.Id, FormType.Edit);
         }
     }
 }

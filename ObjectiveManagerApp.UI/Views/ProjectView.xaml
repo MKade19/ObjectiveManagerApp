@@ -21,9 +21,9 @@
             <TabItem Visibility="Collapsed" x:Name="ListTab"/>
             <TabItem Visibility="Collapsed" x:Name="EditFormTab"/>
         </TabControl>
-        <Grid Panel.ZIndex="-1" 
+        <Grid Panel.ZIndex="1" 
               MinHeight="400" 
-              MinWidth="800" 
+              MinWidth="700" 
               Background="#7FFFFFFF"
               Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibleConverter}}">
             <mah:ProgressRing IsActive="True" Height="315" Width="330" Opacity="0.7"/>

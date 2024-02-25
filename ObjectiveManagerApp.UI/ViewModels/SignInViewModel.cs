@@ -66,7 +66,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
         private async Task SignInAsync()
         {
-            User user = await _authenticationService.AuthenticateUserAsync(_user);
+            PublicUserData user = await _authenticationService.AuthenticateUserAsync(_user);
 
             CustomPrincipal? customPrincipal = Thread.CurrentPrincipal as CustomPrincipal;
             if (customPrincipal == null)
@@ -74,12 +74,12 @@ namespace ObjectiveManagerApp.UI.ViewModels
                 throw new ArgumentException((string)Application.Current.FindResource(PrincipalIsNotSetErrorMessageName));
             }
 
-            customPrincipal.Identity = new CustomIdentity(user.Username, user.Roles);
+            customPrincipal.Identity = new CustomIdentity(user.Id ,user.Username, user.Roles);
             EventAggregator.Instance.RaiseLoginEvent();
 
-            if (customPrincipal.IsInRole(nameof(RoleTypes.ProjectManager)))
+            if (customPrincipal.IsInRole(nameof(RoleType.ProjectManager)))
             {
-                EventAggregator.Instance.RaiseGoToProjectsEvent(user.Id);
+                EventAggregator.Instance.RaiseGoToProjectsEvent();
             }
             else
             {

@@ -9,7 +9,8 @@ namespace ObjectiveManagerApp.UI.Data
             : base(options)
         { }
 
-        public DbSet<InternalUserData> InternalUserData { get; set; } = null!;
+        public DbSet<InternalUserData> Users { get; set; } = null!;
+        public DbSet<PublicUserData> PublicUsers { get; set; } = null!;
         public DbSet<Objective> Objectives { get; set; } = null!;
         public DbSet<Project> Projects { get; set; } = null!;
         public DbSet<Role> Roles { get; set; } = null!;
@@ -17,7 +18,7 @@ namespace ObjectiveManagerApp.UI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<User>();
+            modelBuilder.Ignore<PublicUserData>();
 
             modelBuilder.Entity<InternalUserData>()
                 .HasMany(u => u.Roles)

@@ -41,6 +41,12 @@
                              SelectionChanged="ListBox_SelectionChanged"/>
                 </Border>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                    <Button Content="{DynamicResource CreateCaption}" 
+                            FontSize="16" 
+                            Command="{Binding GoToCreateProjectCommand}"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            Margin="0,10,20,10"/>
                     <Button IsEnabled="{Binding IsSelected}" 
                             Content="{DynamicResource EditCaption}" 
                             FontSize="16" 

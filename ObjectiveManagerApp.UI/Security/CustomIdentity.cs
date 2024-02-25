@@ -5,13 +5,16 @@ namespace ObjectiveManagerApp.UI.Security
 {
     public class CustomIdentity : IIdentity
     {
-        public CustomIdentity(string name, List<Role> roles)
+        public CustomIdentity(int userId, string name, List<Role> roles)
         {
+            UserId = userId;
             Name = name;
             Roles = roles;
         }
         
         public List<Role> Roles { get; private set; }
+
+        public int UserId { get; private set; }
 
         #region IIdentity Members
         public string Name { get; private set; }

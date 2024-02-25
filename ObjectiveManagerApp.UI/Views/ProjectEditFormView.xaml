@@ -21,8 +21,8 @@
                 BorderBrush="#FF636363"
                 BorderThickness="1"
                 CornerRadius="20,20,20,20" 
-                VerticalAlignment="Center">
-            <StackPanel HorizontalAlignment="Center">
+                VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" Margin="10,10,10,10">
                 <StackPanel Margin="0,0,0,40" Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="{DynamicResource CreateFormTitle}" 
                                Visibility="{Binding IsCreated, Converter={StaticResource BoolToVisibleConverter}}"
@@ -82,23 +82,13 @@
                                 FontSize="16"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="{DynamicResource CreateCaption}"
-                            Visibility="{Binding IsCreated, Converter={StaticResource BoolToCollapsedConverter}}"
-                            Command="{Binding ToggleCreateModeCommand}" 
-                            Margin="0,0,20,0"
-                            MinHeight="40"
-                            MinWidth="120"
-                            FontSize="14"/>
                     <Button Content="{DynamicResource SubmitCaption}" 
                             FontSize="14" 
-                            MinHeight="40"
-                            MinWidth="120"
+                            Margin="0,0,20,0"
                             FontWeight="Bold"
                             Command="{Binding SubmitCommand}"/>
                     <Button Content="{DynamicResource BackCaption}" 
                             FontSize="14" 
-                            MinHeight="40"
-                            MinWidth="120"
                             FontWeight="Bold"
                             Command="{Binding BackToProjectsCommand}"/>
                 </StackPanel>

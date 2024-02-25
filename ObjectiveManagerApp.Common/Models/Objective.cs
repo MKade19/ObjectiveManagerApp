@@ -18,6 +18,9 @@ namespace ObjectiveManagerApp.Common.Models
 
         public Category Category { get; set; }
 
+        [ForeignKey("Id")]
+        public PublicUserData User { get; set; }
+
         public int UserId { get; set; }
 
         public Objective(int id, string name, string description, DateTime createdDate, DateTime updatedDate, DateTime deadline, int userId)
@@ -38,9 +41,9 @@ namespace ObjectiveManagerApp.Common.Models
         public override string ToString()
         {
             return $"{Name} - {Description}, " +
-                $"created: {CreatedDate}" +
-                $"updated: {UpdatedDate}" +
-                $"deadline: {Deadline}";
+                $"created: {CreatedDate.ToString("dd/MM/yyyy")}, " +
+                $"updated: {UpdatedDate.ToString("dd/MM/yyyy")}, " +
+                $"deadline: {Deadline.ToString("dd/MM/yyyy")}";
         }
     }
 }

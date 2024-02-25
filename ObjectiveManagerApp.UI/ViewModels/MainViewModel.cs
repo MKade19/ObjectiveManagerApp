@@ -39,12 +39,12 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
         public bool IsAdmin
         {
-            get => Thread.CurrentPrincipal.IsInRole(nameof(RoleTypes.Admin));
+            get => Thread.CurrentPrincipal.IsInRole(nameof(RoleType.Admin));
         }
 
         public bool IsProjectManager
         {
-            get => Thread.CurrentPrincipal.IsInRole(nameof(RoleTypes.ProjectManager));
+            get => Thread.CurrentPrincipal.IsInRole(nameof(RoleType.ProjectManager));
         }
 
         public void GoToProjectsTabCommand_Executed(object sender)

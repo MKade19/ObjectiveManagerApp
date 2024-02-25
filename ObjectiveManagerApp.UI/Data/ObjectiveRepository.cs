@@ -45,9 +45,12 @@ namespace ObjectiveManagerApp.UI.Data
             throw new NotImplementedException();
         }
 
-        public Task<Objective> GetByIdAsync(int id)
+        public async Task<Objective> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext db = Db)
+            {
+                return await db.Objectives.FirstAsync(x => x.Id == id);
+            }
         }
 
         public IAsyncEnumerable<IEnumerable<Objective>> GetChunkAsync()

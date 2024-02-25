@@ -9,7 +9,7 @@
              xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:DashboardViewModel}"
-             d:DesignHeight="500" d:DesignWidth="1100">
+             d:DesignHeight="500" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:BoolToCollapsedConverter x:Key="BoolToCollapsedConverter"/>
         <converters:BoolToVisibleConverter x:Key="BoolToVisibleConverter"/>
@@ -23,11 +23,6 @@
                 <RowDefinition/>
                 <RowDefinition MaxHeight="50"/>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition MaxWidth="400"/>
-            </Grid.ColumnDefinitions>
-
             <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="{Binding Path=Project.Name}" 
                            Margin="0,0,10,0"
@@ -39,81 +34,52 @@
                            FontSize="22" 
                            VerticalAlignment="Center"/> 
             </StackPanel>
+            <TabControl SelectedIndex="{Binding ActiveTabIndex}" Grid.Row="1">
+                <TabItem Visibility="Collapsed" x:Name="DashboardTab">
+                    <StackPanel>
+                        <ListView ItemsSource="{Binding CategorizedObjectives}" 
+                                x:Name="CategorizedObjectivesList"
+                                Grid.Row="1" 
+                                Margin="10,10,10,10"
+                                FontSize="16" 
+                                Background="#FFDEDEDE" SelectionChanged="ListView_SelectionChanged_1">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-            <ListView ItemsSource="{Binding CategorizedObjectives}" 
-                      x:Name="CategorizedObjectivesList"
-                      Grid.Row="1" 
-                      FontSize="16" 
-                      Background="#FFDEDEDE" SelectionChanged="ListView_SelectionChanged_1">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                            
+                                    </StackPanel>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="2">
+                                        <Grid Margin="0,0,20,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition MaxHeight="200"/>
+                                                <RowDefinition MaxHeight="400"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{Binding Path=Category.Name}" FontSize="18" />
+                                            <ListView Grid.Row="1" 
+                                                    ItemsSource="{Binding Path=Objectives}" 
+                                                    FontSize="16" SelectionChanged="ListView_SelectionChanged" />
+
+                                            <Button Content="->"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Button Content="{DynamicResource CreateCaption}" MinWidth="150" Command="{Binding CreateObjectiveCommand}" Margin="0,0,20,0" FontSize="16"/>
+                            <Button Content="{DynamicResource EditCaption}" MinWidth="150" Command="{Binding CreateObjectiveCommand}" Margin="0,0,20,0" FontSize="16"/>
+                            <Button Content="{DynamicResource DeleteCaption}" MinWidth="150" Command="{Binding CreateObjectiveCommand}" Margin="0,0,20,0" FontSize="16"/>
                         </StackPanel>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="2">
-                            <Grid Margin="0,0,20,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition MaxHeight="200"/>
-                                    <RowDefinition MaxHeight="400"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Path=Category.Name}" FontSize="18" />
-                                <ListView Grid.Row="1" 
-                                          ItemsSource="{Binding Path=Objectives}" 
-                                          FontSize="16" SelectionChanged="ListView_SelectionChanged" />
-
-                                <Button Content="->"/>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button Content="{DynamicResource CreateEditCaption}" MinWidth="150" Command="{Binding CreateObjectiveCommand}" Margin="0,0,20,0" FontSize="16"/>
-            </StackPanel>
-
-            <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="{DynamicResource CreateFormTitle}" Visibility="{Binding IsObjectiveCreated, Converter={StaticResource BoolToVisibleConverter}}" FontSize="20"/>
-                    <TextBlock Text="{DynamicResource EditFormTitle}" Visibility="{Binding IsObjectiveCreated, Converter={StaticResource BoolToCollapsedConverter}}" FontSize="20"/>
-                </StackPanel>
-                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Label Margin="0,0,10,0" Target="{Binding ElementName=NameTextBox}" Content="{DynamicResource NameLabel}" FontSize="16"/>
-                        <TextBox Text="{Binding ActiveObjective.Name}" MinWidth="150"  x:Name="NameTextBox" FontSize="16"/>
                     </StackPanel>
-                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Label Margin="0,0,10,0" Target="{Binding ElementName=DescriptionTextBox}" Content="{DynamicResource DescriptionLabel}" FontSize="16"/>
-                        <TextBox Text="{Binding ActiveObjective.Description}" MinWidth="150" x:Name="DescriptionTextBox" FontSize="16"/>
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Label Margin="0,0,10,0" Content="{DynamicResource DeadlineLabel}" FontSize="16" HorizontalAlignment="Right"/>
-                        <DatePicker SelectedDate="{Binding ActiveObjective.Deadline}" MinWidth="150" FontSize="16"/>
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Label Margin="0,0,10,0" Content="{DynamicResource CategoryLabel}" FontSize="16" HorizontalAlignment="Right"/>
-                        <ComboBox SelectedItem="{Binding CurrentCategorizedObjective.Category}" ItemsSource="{Binding Categories}" MinWidth="150" FontSize="16"/>
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Label Margin="0,0,10,0" Content="{DynamicResource UserLabel}" FontSize="16" HorizontalAlignment="Right"/>
-                        <ComboBox  ItemsSource="{Binding Categories}" MinWidth="150" FontSize="16"/>
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Label Margin="0,0,10,0" Content="{DynamicResource CreatedDateLabel}" FontSize="16" HorizontalAlignment="Right"/>
-                        <DatePicker IsEnabled="False" SelectedDate="{Binding ActiveObjective.CreatedDate}" MinWidth="150" FontSize="16"/>
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Label Margin="0,0,10,0" Content="{DynamicResource UpdatedDateLabel}" FontSize="16" HorizontalAlignment="Right"/>
-                        <DatePicker IsEnabled="False" SelectedDate="{Binding ActiveObjective.UpdatedDate}" MinWidth="150" FontSize="16"/>
-                    </StackPanel>
-                </StackPanel>
-                <Button Content="{DynamicResource SubmitCaption}" Command="{Binding SubmitObjectiveCommand}" FontSize="16" HorizontalAlignment="Center"/>
-            </StackPanel>
+                </TabItem>
+                <TabItem Visibility="Collapsed" x:Name="EditFormTab"/>
+            </TabControl>
         </Grid>
         <Grid Panel.ZIndex="-1" 
               MinHeight="400" 

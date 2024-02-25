@@ -3,6 +3,7 @@ using ObjectiveManagerApp.Common.Models;
 using ObjectiveManagerApp.UI.Constants;
 using ObjectiveManagerApp.UI.Data.Abstract;
 using ObjectiveManagerApp.UI.Exceptions;
+using System.ComponentModel;
 using System.Windows;
 
 namespace ObjectiveManagerApp.UI.Data
@@ -65,9 +66,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                return await db.Projects
-                    .Where(p => p.ManagerId == userId)
-                    .ToListAsync();
+                return await db.Projects.Where(p => p.ManagerId == userId).ToListAsync();
             }
         }
 

@@ -14,11 +14,13 @@ namespace ObjectiveManagerApp.UI.ViewModels
         private const string DataSavedMessageName = "DataSavedMessage";
 
         public DelegateCommand BackToProjectsCommand { get; }
+        public DelegateCommand SubmitCommand { get; }
 
         public ProjectEditFormViewModel(IProjectService projectService)
         {
             _projectService = projectService;
             BackToProjectsCommand = new DelegateCommand(BackToProjectsCommand_Executed);
+            SubmitCommand = new DelegateCommand(SubmitCommand_Executed);
         }
 
         public bool IsCreated
@@ -45,12 +47,12 @@ namespace ObjectiveManagerApp.UI.ViewModels
         {
             try
             {
-                //IsLoading = true;
+                EventAggregator.Instance.RaiseProjectViewIsLoadingEvent();
                 CurrentProject = await _projectService.GetByIdAsync(projectId);
             }
             finally
             {
-                //IsLoading = false;
+                EventAggregator.Instance.RaiseProjectViewFinishedLoadingEvent();
             }
         }
 
@@ -58,7 +60,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
         {
             try
             {
-                //IsLoading = true;
+                EventAggregator.Instance.RaiseProjectViewIsLoadingEvent();
 
                 if (IsCreated)
                 {
@@ -70,17 +72,18 @@ namespace ObjectiveManagerApp.UI.ViewModels
                 }
 
                 MessageBoxStore.Information((string)Application.Current.FindResource(DataSavedMessageName));
+                BackToProjectsCommand_Executed(this);
             }
             finally
             {
-                //IsLoading = false;
+                EventAggregator.Instance.RaiseProjectViewFinishedLoadingEvent();
             }
         }
 
-        public void BackToProjectsCommand_Executed(object projectData)
+        public void BackToProjectsCommand_Executed(object sender)
         {
-            //NEED TO GET USER ID
-            EventAggregator.Instance.RaiseGoToProjectsEvent(1);
+            CurrentProject = new Project();
+            EventAggregator.Instance.RaiseGoToProjectsEvent();
         }
     }
 }

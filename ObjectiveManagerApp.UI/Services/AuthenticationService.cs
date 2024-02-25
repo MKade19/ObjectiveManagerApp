@@ -18,7 +18,7 @@ namespace ObjectiveManagerApp.UI.Services
             _hashService = hashService;
         }
 
-        public async Task<User> AuthenticateUserAsync(InternalUserData userFromUi)
+        public async Task<PublicUserData> AuthenticateUserAsync(InternalUserData userFromUi)
         {
             InternalUserData userData = await _userRepository.GetByUsernameAsync(userFromUi.Username);
 
@@ -32,7 +32,7 @@ namespace ObjectiveManagerApp.UI.Services
                 throw new UnauthorizedAccessException((string)Application.Current.FindResource(IncorrectPasswordErrorMessageName));
             }
 
-            return new User(userData.Id, userData.Username, userData.Fullname, userData.Roles);
+            return new PublicUserData(userData.Id, userData.Username, userData.Fullname, userData.Roles);
         }
 
         public async Task RegisterAsync(InternalUserData user)

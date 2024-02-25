@@ -1,6 +1,6 @@
 ﻿namespace ObjectiveManagerApp.UI.Constants
 {
-    public enum RoleTypes
+    public enum RoleType
     {
         ProjectManager,
         Admin,

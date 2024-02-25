@@ -43,7 +43,10 @@ namespace ObjectiveManagerApp.UI.Data
 
         public async Task<Category> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            using (ApplicationContext db = Db)
+            {
+                return await db.Categories.FirstAsync(c => c.Id == id);
+            }
         }
     }
 }

@@ -18,6 +18,9 @@ namespace ObjectiveManagerApp.UI.Services
             return await _categoryRepository.GetAllAsync();
         }
 
-        
+        public Task<Category> GetByIdAsync(int id)
+        {
+            return _categoryRepository.GetByIdAsync(id);
+        }
     }
 }

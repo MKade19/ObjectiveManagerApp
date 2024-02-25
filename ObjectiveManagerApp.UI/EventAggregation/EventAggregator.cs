@@ -1,4 +1,5 @@
-﻿using ObjectiveManagerApp.UI.EventAggregation.EventArgsTypes;
+﻿using ObjectiveManagerApp.UI.Constants;
+using ObjectiveManagerApp.UI.EventAggregation.EventArgsTypes;
 
 namespace ObjectiveManagerApp.UI.EventAggregation
 {
@@ -18,9 +19,14 @@ namespace ObjectiveManagerApp.UI.EventAggregation
         public event EventHandler? Logout;
         public event EventHandler? AuthViewIsLoading;
         public event EventHandler? AuthViewFinishedLoading;
+        public event EventHandler? ProjectViewIsLoading;
+        public event EventHandler? ProjectViewFinishedLoading;
+        public event EventHandler? DashboardViewIsLoading;
+        public event EventHandler? DashboardViewFinishedLoading;
         public event EventHandler? ClearPasswordBox;
-        public event EventHandler<NavigationEventArgs>? GoToProjects;
-        public event EventHandler<NavigationEventArgs>? GoToProjectEditForm;
+        public event EventHandler? GoToProjects;
+        public event EventHandler<FormNavigationEventArgs>? GoToProjectEditForm;
+        public event EventHandler<FormNavigationEventArgs>? GoToObjectiveEditForm;
         public event EventHandler? GoToSignIn;
         public event EventHandler? GoToSignUp;
         public event EventHandler<NavigationEventArgs>? GoToDashboard;
@@ -41,6 +47,26 @@ namespace ObjectiveManagerApp.UI.EventAggregation
             AuthViewFinishedLoading?.Invoke(this, EventArgs.Empty);
         }
 
+        public void RaiseProjectViewIsLoadingEvent()
+        {
+            ProjectViewIsLoading?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RaiseProjectViewFinishedLoadingEvent()
+        {
+            ProjectViewFinishedLoading?.Invoke(this, EventArgs.Empty);
+        }
+        
+        public void RaiseDashboardViewIsLoadingEvent()
+        {
+            DashboardViewIsLoading?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void RaiseDashboardViewFinishedLoadingEvent()
+        {
+            DashboardViewFinishedLoading?.Invoke(this, EventArgs.Empty);
+        }
+
         public void RaiseLogoutEvent()
         {
             Logout?.Invoke(this, EventArgs.Empty);
@@ -51,14 +77,19 @@ namespace ObjectiveManagerApp.UI.EventAggregation
             ClearPasswordBox?.Invoke(this, EventArgs.Empty);
         }
 
-        public void RaiseGoToProjectsEvent(int userId)
+        public void RaiseGoToProjectsEvent()
         {
-            GoToProjects?.Invoke(this, new NavigationEventArgs(userId));
+            GoToProjects?.Invoke(this, EventArgs.Empty);
         }
 
-        public void RaiseGoToProjectEditFormEvent(int projectId)
+        public void RaiseGoToProjectEditFormEvent(int projectId, FormType type)
         {
-            GoToProjectEditForm?.Invoke(this, new NavigationEventArgs(projectId));
+            GoToProjectEditForm?.Invoke(this, new FormNavigationEventArgs(projectId, type));
+        }
+        
+        public void RaiseGoToObjectiveEditFormEvent(int projectId, FormType type)
+        {
+            GoToObjectiveEditForm?.Invoke(this, new FormNavigationEventArgs(projectId, type));
         }
 
         public void RaiseGoToSignInEvent()

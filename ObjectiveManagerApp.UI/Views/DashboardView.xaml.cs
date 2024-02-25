@@ -14,8 +14,8 @@ namespace ObjectiveManagerApp.UI.Views
         public DashboardView(ICategoryService categoryService, IProjectService projectService, IObjectiveService objectiveService)
         {
             InitializeComponent();
-            DataContext = new DashboardViewModel(categoryService, projectService, objectiveService);
-            EventAggregator.Instance.GoToDashboard += View_GoToDashboard; ;
+            DataContext = new DashboardViewModel(categoryService, projectService);
+            EventAggregator.Instance.GoToDashboard += View_GoToDashboard;
         }
 
         private async void View_GoToDashboard(object? sender, NavigationEventArgs e)

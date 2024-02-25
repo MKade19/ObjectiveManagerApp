@@ -32,7 +32,7 @@ namespace ObjectiveManagerApp.UI
             ((MainViewModel)DataContext).RefreshIsAuthencated();
         }
 
-        private void MainWindow_GoToProjects(object? sender, NavigationEventArgs e)
+        private void MainWindow_GoToProjects(object? sender, EventArgs e)
         {
             ((MainViewModel)DataContext).ActiveTabIndex = 1;
         }
