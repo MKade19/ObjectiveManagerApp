@@ -15,6 +15,7 @@
         <converters:BoolToVisibleConverter x:Key="BoolToVisibleConverter"/>
         <converters:IntToVisibleConverter x:Key="IntToVisibleConverter"/>
         <converters:IntToCollapsedConverted x:Key="IntToCollapsedConverted"/>
+        <converters:ObjectToObjectiveConverter x:Key="ObjectToObjectiveConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid x:Name="DashboardGrid">
@@ -37,15 +38,15 @@
                                        VerticalAlignment="Center"/>
                         </StackPanel>
                         <ListView ItemsSource="{Binding CategorizedObjectives}" 
-                                x:Name="MainListView"
-                                Grid.Row="1" 
-                                Margin="10,10,10,10"
-                                FontSize="16" 
-                                Background="#FFDEDEDE">
+                                  x:Name="MainListView"
+                                  Grid.Row="1" 
+                                  Margin="10,10,10,10"
+                                  FontSize="16" 
+                                  Background="#FFDEDEDE">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-
+                                    <StackPanel Margin="0" Orientation="Horizontal">
+                                        
                                     </StackPanel>
                                 </ItemsPanelTemplate>
                             </ListView.ItemsPanel>
@@ -63,23 +64,31 @@
                                                       Margin="0,10,0,10"
                                                       ItemsSource="{Binding Path=Objectives}" 
                                                       SelectedItem="{Binding SelectedObjective}"
-                                                      FontSize="16" SelectionChanged="ListView_SelectionChanged" />
-
-                                            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
-                                                <Button Content="{DynamicResource LeftArrowCaption}" 
-                                                        Margin="0,0,10,0"
-                                                        Command="{Binding DataContext.PushObjectiveLeftCommand, ElementName=MainListView}"
-                                                        CommandParameter="{Binding}"/>
-                                                <Button Content="{DynamicResource RightArrowCaption}"
-                                                        Command="{Binding DataContext.PushObjectiveRightCommand, ElementName=MainListView}"
-                                                        CommandParameter="{Binding}"/>
-                                            </StackPanel>
+                                                      FontSize="16" SelectionChanged="ListView_SelectionChanged">
+                                            </ListView>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
 
+                        <StackPanel Margin="0,0,0,10" Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
+                            <Button Content="{DynamicResource LeftArrowCaption}" 
+                                    Margin="0,0,10,0"
+                                    IsEnabled="{Binding IsSelected}"
+                                    FontSize="14"
+                                    MinWidth="40"
+                                    FontWeight="Bold"
+                                    Command="{Binding PushObjectiveLeftCommand}"
+                                    CommandParameter="{Binding}" />
+                            <Button Content="{DynamicResource RightArrowCaption}"
+                                    Command="{Binding PushObjectiveRightCommand}"
+                                    IsEnabled="{Binding IsSelected}"
+                                    FontSize="14"
+                                    MinWidth="40"
+                                    FontWeight="Bold"
+                                    CommandParameter="{Binding}"/>
+                        </StackPanel>
                         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Button Content="{DynamicResource CreateCaption}" Command="{Binding CreateCommand}" Margin="0,0,20,0" FontSize="16"/>
                             <Button Content="{DynamicResource EditCaption}" IsEnabled="{Binding IsSelected}" Command="{Binding EditCommand}" Margin="0,0,20,0" FontSize="16"/>

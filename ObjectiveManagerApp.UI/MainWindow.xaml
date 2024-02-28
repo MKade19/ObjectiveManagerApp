@@ -22,17 +22,26 @@
             <RowDefinition MinHeight="30" MaxHeight="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Menu Visibility="{Binding IsAuthenticated, Converter={StaticResource BoolToVisibleConverter}}" 
-              Padding="0,5,0,5" 
+        <Menu Padding="0,5,0,5" 
               Panel.ZIndex="-1" 
               Background="#FF91CAFF">
             <MenuItem Visibility="{Binding IsProjectManager, Converter={StaticResource BoolToVisibleConverter}}" 
-                Margin="5,0,5,0" 
-                Command="{Binding GoToProjectsTabCommand}" 
-                Header="{DynamicResource ProjectsCaption}" 
-                FontSize="14"/>
-            <MenuItem Margin="5,0,5,0" Command="{Binding GoToObjectivesTabCommand}" Header="{DynamicResource ObjectivesCaption}"/>
-            <MenuItem Margin="5,0,5,0" Command="{Binding LogoutCommand}" Header="{DynamicResource LogoutCaption}"/>
+                      Margin="5,0,5,0" 
+                      Command="{Binding GoToProjectsTabCommand}" 
+                      Header="{DynamicResource ProjectsCaption}" 
+                      FontSize="14"/>
+            <MenuItem Visibility="{Binding IsAuthenticated, Converter={StaticResource BoolToVisibleConverter}}" 
+                      Margin="5,0,5,0" 
+                      Command="{Binding GoToObjectivesTabCommand}" 
+                      Header="{DynamicResource ObjectivesCaption}"/>
+            <MenuItem Visibility="{Binding IsAuthenticated, Converter={StaticResource BoolToVisibleConverter}}" 
+                      Margin="5,0,5,0" 
+                      Command="{Binding LogoutCommand}" 
+                      Header="{DynamicResource LogoutCaption}"/>
+            <MenuItem Margin="5,0,5,0"  
+                      x:Name="LanguageMenu" 
+                      Header="{DynamicResource ChangeLanguageCaption}" 
+                      Height="33" HorizontalAlignment="Left"/>
         </Menu>
         <TabControl SelectedIndex="{Binding ActiveTabIndex}" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TabItem x:Name="AuthTab"/>

@@ -11,6 +11,7 @@ using ObjectiveManagerApp.UI.Util;
 using System.Configuration;
 using System.Globalization;
 using System.Windows;
+//using Microsoft.Extensions.Configuration;
 
 namespace ObjectiveManagerApp.UI
 {
@@ -22,10 +23,13 @@ namespace ObjectiveManagerApp.UI
         private readonly IHost _host;
         private static List<CultureInfo> _languages = new List<CultureInfo>();
         private const string DatabaseConnectionName = "MsSqlDbConnection";
-        private const string LogFileName = "log.txt";
 
         public App()
         {
+            _languages.Clear();
+            _languages.Add(new CultureInfo("en-US"));
+            _languages.Add(new CultureInfo("ru-RU"));
+
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(ExceptionHandler);
@@ -33,16 +37,15 @@ namespace ObjectiveManagerApp.UI
             _host = Host.CreateDefaultBuilder()
                 .UseSerilog((host, loggerConfiguration) =>
                 {
-                    loggerConfiguration
-                    .WriteTo.File(LogFileName)
-                    .MinimumLevel.Debug();
+                    loggerConfiguration.ReadFrom.Configuration(host.Configuration)
+                        .WriteTo.File(ConfigurationManager.AppSettings["serilog:write-to:File.path"]);
                 })
                 .ConfigureServices(services =>
                 {
                     services.AddSingleton<MainWindow>();
                     services.AddDbContextPool<ApplicationContext>(options =>
                     {
-                        options.UseSqlServer(ConfigurationManager.ConnectionStrings[DatabaseConnectionName].ConnectionString);
+                        options.UseSqlServer(System.Configuration.ConfigurationManager.ConnectionStrings[DatabaseConnectionName].ConnectionString);
                     });
                     services.AddTransient<IUserRepository, UserRepository>();
                     services.AddTransient<IProjectRepository, ProjectRepository>();
@@ -70,6 +73,58 @@ namespace ObjectiveManagerApp.UI
         {
             MessageBoxStore.Error(e.Exception.Message);
             e.Handled = true;
+        }
+
+        public static List<CultureInfo> Languages
+        {
+            get
+            {
+                return _languages;
+            }
+        }
+
+        public static event EventHandler? LanguageChanged;
+
+        public static CultureInfo Language
+        {
+            get
+            {
+                return System.Threading.Thread.CurrentThread.CurrentUICulture;
+            }
+            set
+            {
+                if (value==null) throw new ArgumentNullException("value");
+                if (value==System.Threading.Thread.CurrentThread.CurrentUICulture) return;
+
+                System.Threading.Thread.CurrentThread.CurrentUICulture = value;
+
+                ResourceDictionary dict = new ResourceDictionary();
+                switch (value.Name)
+                {
+                    case "ru-RU":
+                        dict.Source = new Uri(String.Format("Resources/lang.{0}.xaml", value.Name), UriKind.Relative);
+                        break;
+                    default:
+                        dict.Source = new Uri("Resources/lang.xaml", UriKind.Relative);
+                        break;
+                }
+
+                ResourceDictionary oldDict = (from d in Application.Current.Resources.MergedDictionaries
+                                              where d.Source != null && d.Source.OriginalString.StartsWith("Resources/lang.")
+                                              select d).First();
+                if (oldDict != null)
+                {
+                    int ind = Application.Current.Resources.MergedDictionaries.IndexOf(oldDict);
+                    Application.Current.Resources.MergedDictionaries.Remove(oldDict);
+                    Application.Current.Resources.MergedDictionaries.Insert(ind, dict);
+                }
+                else
+                {
+                    Application.Current.Resources.MergedDictionaries.Add(dict);
+                }
+
+                LanguageChanged(Application.Current, new EventArgs());
+            }
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)

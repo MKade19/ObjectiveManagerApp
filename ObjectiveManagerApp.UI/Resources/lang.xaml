@@ -35,6 +35,7 @@
     <v:String x:Key="BackCaption">Back</v:String>
     <v:String x:Key="ProjectsCaption">Projects</v:String>
     <v:String x:Key="ObjectivesCaption">Objectives</v:String>
+    <v:String x:Key="ChangeLanguageCaption">Change language</v:String>
     <v:String x:Key="LogoutCaption">Logout</v:String>
     <v:String x:Key="GoToProjectCaption">Go to project</v:String>
     <v:String x:Key="CreateCaption">Create</v:String>
@@ -55,14 +56,14 @@
     <v:String x:Key="PrincipalIsNotSetMessage">The application's default thread principal must be set to a CustomPrincipal object on startup.</v:String>
     <v:String x:Key="ObjectiveNotFoundErrorMessage">There is no such a objective.</v:String>
     <v:String x:Key="ProjectNotFoundErrorMessage">There is no such a project.</v:String>
+    <v:String x:Key="WrongCategoryErrorMessage">Wrong category.</v:String>
     <!--Information messages-->
     <v:String x:Key="SignedUpMessage">You have signed up!</v:String>
-    <v:String x:Key="SignedInMessage">You have signed in!</v:String>
     <v:String x:Key="LogoutMessage">You have logged out!</v:String>
     <v:String x:Key="DataSavedMessage">Data was saved!</v:String>
     <v:String x:Key="ProjectDeleteMessage">Project was deleted!</v:String>
     <v:String x:Key="ObjectiveDeleteMessage">Objective was deleted!</v:String>
     <v:String x:Key="PasswordsDoesNotMatchMessage">Passwords does not match!</v:String>
     <!--Confirmation messages-->
-    <v:String x:Key="DeleteConfirmationMessage">Are you sure to delete this item?</v:String>
+    <v:String x:Key="DeleteConfirmationMessage">Are you sure want to delete this item?</v:String>
 </ResourceDictionary>

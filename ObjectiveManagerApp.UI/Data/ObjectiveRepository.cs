@@ -68,7 +68,7 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                Objective objectiveFromDb = await db.Objectives.FirstOrDefaultAsync() 
+                Objective objectiveFromDb = await db.Objectives.FirstOrDefaultAsync(o => o.Id == objective.Id) 
                     ?? throw new NotFoundException((string)Application.Current.FindResource(ObjectiveNotFoundErrorMessageName));
                 objectiveFromDb.Name = objective.Name;
                 objectiveFromDb.Description = objective.Description;

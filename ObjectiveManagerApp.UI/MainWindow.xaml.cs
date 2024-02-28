@@ -4,6 +4,8 @@ using ObjectiveManagerApp.UI.EventAggregation.EventArgsTypes;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.ViewModels;
 using ObjectiveManagerApp.UI.Views;
+using System.Globalization;
+using System.Windows.Controls;
 
 namespace ObjectiveManagerApp.UI
 {
@@ -25,6 +27,21 @@ namespace ObjectiveManagerApp.UI
             ProjectsTab.Content = new ProjectView(projectService);
             DashboardTab.Content = new DashboardView(categoryService, projectService, objectiveService, userService);
             ObjectivesTab.Content = new ObjectivesView(objectiveService);
+
+            App.LanguageChanged += LanguageChanged;
+            CultureInfo currLang = App.Language;
+
+            //Заполняем меню смены языка:
+            LanguageMenu.Items.Clear();
+            foreach (var lang in App.Languages)
+            {
+                MenuItem menuLang = new MenuItem();
+                menuLang.Header = lang.DisplayName;
+                menuLang.Tag = lang;
+                menuLang.IsChecked = lang.Equals(currLang);
+                menuLang.Click += ChangeLanguageClick;
+                LanguageMenu.Items.Add(menuLang);
+            }
         }
 
         private void Mainindow_Login(object? sender, EventArgs e)
@@ -45,6 +62,30 @@ namespace ObjectiveManagerApp.UI
         private void MainWindow_GoToObjectives(object? sender, EventArgs e)
         {
             ((MainViewModel)DataContext).ActiveTabIndex = 3;
+        }
+
+        private void LanguageChanged(Object sender, EventArgs e)
+        {
+            CultureInfo currLang = App.Language;
+
+            foreach (MenuItem i in LanguageMenu.Items)
+            {
+                CultureInfo ci = i.Tag as CultureInfo;
+                i.IsChecked = ci != null && ci.Equals(currLang);
+            }
+        }
+
+        private void ChangeLanguageClick(Object sender, EventArgs e)
+        {
+            MenuItem mi = sender as MenuItem;
+            if (mi != null)
+            {
+                CultureInfo lang = mi.Tag as CultureInfo;
+                if (lang != null)
+                {
+                    App.Language = lang;
+                }
+            }
         }
     }
 }

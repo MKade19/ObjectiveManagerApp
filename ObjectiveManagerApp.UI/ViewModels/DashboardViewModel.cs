@@ -25,6 +25,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
         private const string ObjectiveDeleteMessageName = "ObjectiveDeleteMessage";
         private const string DeleteConfirmationMessageName = "DeleteConfirmationMessage";
+        private const string WrongCategoryErrorMessageName = "WrongCategoryErrorMessage";
 
         public DelegateCommand CreateCommand { get; }
         public DelegateCommand EditCommand { get; }
@@ -180,8 +181,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
                 await _objectiveService.DeleteOneAsync(SelectedObjective);
                 MessageBoxStore.Information((string)Application.Current.FindResource(ObjectiveDeleteMessageName));
-                await LoadCategoriesAsync();
-                MakeCategorizedObjectives();
+                await RefreshViewAsync();
             }
             finally
             {
@@ -189,14 +189,47 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         } 
         
-        public void PushObjectiveLeftCommand_Excuted(object sender)
+        public async void PushObjectiveLeftCommand_Excuted(object sender)
         {
-
+            await UpdateCategoryAsync(-1);
         }
 
-        public void PushObjectiveRightCommand_Excuted(object sender)
+        public async void PushObjectiveRightCommand_Excuted(object sender)
         {
+            await UpdateCategoryAsync(1);
+        }
 
+        private async Task UpdateCategoryAsync(int offset)
+        {
+            try
+            {
+                IsLoading = true;
+
+                CategorizedObjectiveList selectedList = CategorizedObjectives.FirstOrDefault(c => c.Category.Id == SelectedObjective.CategoryId);
+                int NewIndex = selectedList.Index + offset;
+                CategorizedObjectiveList newList = CategorizedObjectives.FirstOrDefault(c => c.Index == NewIndex);
+
+                if (newList == null)
+                {
+                    MessageBoxStore.Warning((string)Application.Current.FindResource(WrongCategoryErrorMessageName));
+                    return;
+                }
+
+                SelectedObjective.CategoryId = newList.Category.Id;
+
+                await _objectiveService.EditByIdAsync(SelectedObjective);
+                await RefreshViewAsync();
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
+        private async Task RefreshViewAsync()
+        {
+            await LoadCategoriesAsync();
+            MakeCategorizedObjectives();
         }
     }
 }
