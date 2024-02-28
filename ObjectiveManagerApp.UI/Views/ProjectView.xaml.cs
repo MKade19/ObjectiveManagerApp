@@ -40,7 +40,7 @@ namespace ObjectiveManagerApp.UI.Views
             ((ProjectViewModel)DataContext).ActiveTabIndex = 0;
         }
 
-        private void ProjectView_GoToProjectEditForm(object? sender, FormNavigationEventArgs e)
+        private void ProjectView_GoToProjectEditForm(object? sender, NavigationEventArgs e)
         {
             ((ProjectViewModel)DataContext).ActiveTabIndex = 1;
         }

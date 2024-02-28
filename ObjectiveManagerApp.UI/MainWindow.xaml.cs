@@ -12,7 +12,7 @@ namespace ObjectiveManagerApp.UI
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        public MainWindow(IAuthenticationService authService, IProjectService projectService, ICategoryService categoryService, IObjectiveService objectiveService)
+        public MainWindow(IAuthenticationService authService, IProjectService projectService, ICategoryService categoryService, IObjectiveService objectiveService, IUserService userService)
         {
             InitializeComponent();
             DataContext = new MainViewModel();
@@ -23,7 +23,7 @@ namespace ObjectiveManagerApp.UI
 
             AuthTab.Content = new AuthView(authService);
             ProjectsTab.Content = new ProjectView(projectService);
-            DashboardTab.Content = new DashboardView(categoryService, projectService, objectiveService);
+            DashboardTab.Content = new DashboardView(categoryService, projectService, objectiveService, userService);
             ObjectivesTab.Content = new ObjectivesView(objectiveService);
         }
 

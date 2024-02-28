@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using ObjectiveManagerApp.UI.EventAggregation;
+using ObjectiveManagerApp.UI.Services.Abstract;
+using ObjectiveManagerApp.UI.ViewModels;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ObjectiveManagerApp.UI.Views
 {
@@ -20,9 +10,21 @@ namespace ObjectiveManagerApp.UI.Views
     /// </summary>
     public partial class ObjectiveEditFormView : UserControl
     {
-        public ObjectiveEditFormView()
+        public ObjectiveEditFormView(IObjectiveService objectiveService, ICategoryService categoryService, IUserService userService)
         {
             InitializeComponent();
+            DataContext = new ObjectiveEditFormViewModel(objectiveService, categoryService, userService);
+
+            EventAggregator.Instance.GoToObjectiveEditForm += Form_GoToObjectiveEditForm; ;
+        }
+
+        private async void Form_GoToObjectiveEditForm(object? sender, EventAggregation.EventArgsTypes.ObjectiveNavigationEventArgs e)
+        {
+            ((ObjectiveEditFormViewModel)DataContext).IsCreated = e.ObjectiveId == -1;
+            
+            await ((ObjectiveEditFormViewModel)DataContext).LoadObjectiveForForm(e.ObjectiveId, e.ProjectId);
+
+            await ((ObjectiveEditFormViewModel)DataContext).LoadDataForForm();
         }
     }
 }

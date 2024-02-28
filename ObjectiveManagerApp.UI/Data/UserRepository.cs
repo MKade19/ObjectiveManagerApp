@@ -96,11 +96,26 @@ namespace ObjectiveManagerApp.UI.Data
             }
         }
 
+        public async Task<PublicUserData> GetPublicDataByIdAsync(int id)
+        {
+            using (ApplicationContext db = Db)
+            {
+                var query = from u in db.Users
+                            where u.Id == id
+                            select new PublicUserData(u.Id, u.Username, u.Fullname, u.Roles);
+
+                return await query.FirstAsync();
+            }
+        }
+
         public async Task<IEnumerable<PublicUserData>> GetPublicDataAsync()
         {
             using (ApplicationContext db = Db)
             {
-                return await db.PublicUsers.ToListAsync();
+                var query = from u in db.Users
+                            select new PublicUserData(u.Id, u.Username, u.Fullname, u.Roles);
+
+                return await query.ToListAsync();
             }
         }
     }

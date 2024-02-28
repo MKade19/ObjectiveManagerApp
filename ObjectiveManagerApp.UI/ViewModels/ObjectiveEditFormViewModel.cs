@@ -3,26 +3,32 @@ using ObjectiveManagerApp.UI.EventAggregation;
 using ObjectiveManagerApp.UI.Services.Abstract;
 using ObjectiveManagerApp.UI.Util;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace ObjectiveManagerApp.UI.ViewModels
 {
     public class ObjectiveEditFormViewModel : ViewModelBase
     {
         private readonly IObjectiveService _objectiveService;
+        private readonly ICategoryService _categoryService;
+        private readonly IUserService _userService;
 
         private ObservableCollection<Category> _categories = new ObservableCollection<Category>();
         private ObservableCollection<PublicUserData> _users = new ObservableCollection<PublicUserData>();
-        private Objective _currentObjective;
-        private Category _currentCategory;
-        private PublicUserData _currentUser;
+        private Objective _currentObjective = new Objective();
+        private Category? _currentCategory;
+        private PublicUserData? _currentUser;
         private bool _isCreated = true;
+        private const string DataSavedMessageName = "DataSavedMessage";
 
         public DelegateCommand SubmitObjectiveCommand { get; }
         public DelegateCommand BackCommand { get; }
 
-        public ObjectiveEditFormViewModel(IObjectiveService objectiveService)
+        public ObjectiveEditFormViewModel(IObjectiveService objectiveService, ICategoryService categoryService, IUserService userService)
         {
             _objectiveService = objectiveService;
+            _categoryService = categoryService;
+            _userService = userService;
             SubmitObjectiveCommand = new DelegateCommand(SubmitObjectiveCommand_Executed);
             BackCommand = new DelegateCommand(BackCommand_Executed);
         }
@@ -37,7 +43,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
-        public Category CurrentCategory
+        public Category? CurrentCategory
         {
             get => _currentCategory;
             set
@@ -47,7 +53,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
         }
 
-        public PublicUserData CurrentUser
+        public PublicUserData? CurrentUser
         {
             get => _currentUser;
             set
@@ -101,6 +107,9 @@ namespace ObjectiveManagerApp.UI.ViewModels
                 {
                     await EditObjectiveAsync();
                 }
+                
+                MessageBoxStore.Information((string)Application.Current.FindResource(DataSavedMessageName));
+                BackCommand_Executed(this);
             }
             finally
             {
@@ -110,22 +119,65 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
         public void BackCommand_Executed(object sender)
         {
-            EventAggregator.Instance.RaiseGoToDashboardEvent(CurrentObjective.Project.Id);
+            EventAggregator.Instance.RaiseBackToDashboardEvent();
         }
 
-        public async Task LoadDataForForm(int objectiveId)
+        public async Task LoadObjectiveForForm(int objectiveId, int projectId)
         {
-            CurrentObjective = await _objectiveService.GetByIdAsync(objectiveId);
+            if (!IsCreated)
+            {
+                CurrentObjective = await _objectiveService.GetByIdAsync(objectiveId);
+            }
+            else
+            {
+                CurrentObjective = new Objective();
+                CurrentObjective.ProjectId = projectId;
+            }
+        }
+
+        public async Task LoadDataForForm()
+        {
+            try
+            {
+                EventAggregator.Instance.RaiseDashboardViewIsLoadingEvent();
+
+                Categories.Clear();
+                var categoriesData = await _categoryService.GetAllAsync();
+
+                foreach (var category in categoriesData)
+                {
+                    Categories.Add(category);
+                }
+
+                Users.Clear();
+                var usersData = await _userService.GetAllAsync();
+
+                foreach (var user in usersData)
+                {
+                    Users.Add(user);
+                }
+
+                CurrentUser = Users.FirstOrDefault(u => u.Id == CurrentObjective.UserId);
+                CurrentCategory = Categories.FirstOrDefault(u => u.Id == CurrentObjective.CategoryId);
+            }
+            finally
+            {
+                EventAggregator.Instance.RaiseDashboardViewFinishedLoadingEvent();
+            }
         }
 
         private async Task CreateObjectiveAsync()
         {
-            await _objectiveService.CreateOneAsync(CurrentObjective);
+            _currentObjective.CategoryId = CurrentCategory.Id;
+            _currentObjective.UserId = CurrentUser.Id;
+            await _objectiveService.CreateOneAsync(_currentObjective);
         }
 
         private async Task EditObjectiveAsync()
         {
-            await _objectiveService.CreateOneAsync(CurrentObjective);
+            _currentObjective.CategoryId = CurrentCategory.Id;
+            _currentObjective.UserId = CurrentUser.Id;
+            await _objectiveService.EditByIdAsync(_currentObjective);
         }
     }
 }

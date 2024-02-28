@@ -36,5 +36,10 @@ namespace ObjectiveManagerApp.UI.Services
         {
             return await _objectiveRepository.GetByIdAsync(id);
         }
+
+        public async Task DeleteOneAsync(Objective objective)
+        {
+            await _objectiveRepository.DeleteOneAsync(objective);
+        }
     }
 }

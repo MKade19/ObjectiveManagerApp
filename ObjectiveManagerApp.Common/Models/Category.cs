@@ -16,6 +16,10 @@ namespace ObjectiveManagerApp.Common.Models
             Name = name;
         }
 
+        public Category()
+        {
+        }
+
         public override string ToString()
         {
             return Name;

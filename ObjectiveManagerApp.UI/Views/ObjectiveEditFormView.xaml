@@ -24,38 +24,50 @@
             <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
                 <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Label Margin="0,0,10,0" Target="{Binding ElementName=NameTextBox}" Content="{DynamicResource NameLabel}" FontSize="16"/>
-                    <TextBox Text="{Binding CurrentObjective.Name}" MinWidth="150"  x:Name="NameTextBox" FontSize="16"/>
+                    <TextBox Text="{Binding Path=CurrentObjective.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="150"  x:Name="NameTextBox" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Label Margin="0,0,10,0" Target="{Binding ElementName=DescriptionTextBox}" Content="{DynamicResource DescriptionLabel}" FontSize="16"/>
-                    <TextBox Text="{Binding CurrentObjective.Description}" MinWidth="150" x:Name="DescriptionTextBox" FontSize="16"/>
+                    <TextBox Text="{Binding Path=CurrentObjective.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="150" x:Name="DescriptionTextBox" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Label Margin="0,0,10,0" Content="{DynamicResource DeadlineLabel}" FontSize="16" HorizontalAlignment="Right"/>
-                    <DatePicker SelectedDate="{Binding CurrentObjective.Deadline}" MinWidth="150" FontSize="16"/>
+                    <DatePicker SelectedDate="{Binding Path=CurrentObjective.Deadline, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="150" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Label Margin="0,0,10,0" Content="{DynamicResource CategoryLabel}" FontSize="16" HorizontalAlignment="Right"/>
-                    <ComboBox SelectedItem="{Binding CurrentObjective.Category}" ItemsSource="{Binding Categories}" MinWidth="150" FontSize="16"/>
+                    <ComboBox SelectedItem="{Binding CurrentCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Categories}" MinWidth="150" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Label Margin="0,0,10,0" Content="{DynamicResource UserLabel}" FontSize="16" HorizontalAlignment="Right"/>
-                    <ComboBox ItemsSource="{Binding Users}" MinWidth="150" FontSize="16"/>
+                    <ComboBox SelectedItem="{Binding CurrentUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Users}" MinWidth="150" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20" 
+                            Visibility="{Binding IsCreated, Converter={StaticResource BoolToCollapsedConverter}}"
                             Orientation="Horizontal" 
                             HorizontalAlignment="Right">
                     <Label Margin="0,0,10,0" Content="{DynamicResource CreatedDateLabel}" FontSize="16" HorizontalAlignment="Right"/>
-                    <DatePicker IsEnabled="False" SelectedDate="{Binding CurrentObjective.CreatedDate}" MinWidth="150" FontSize="16"/>
+                    <DatePicker IsEnabled="False" SelectedDate="{Binding Path=CurrentObjective.CreatedDate, StringFormat=dd/MM/yyyy}" MinWidth="150" FontSize="16"/>
                 </StackPanel>
                 <StackPanel Margin="0,0,0,20" 
+                            Visibility="{Binding IsCreated, Converter={StaticResource BoolToCollapsedConverter}}"
                             Orientation="Horizontal" 
                             HorizontalAlignment="Right">
                     <Label Margin="0,0,10,0" Content="{DynamicResource UpdatedDateLabel}" FontSize="16" HorizontalAlignment="Right"/>
-                    <DatePicker IsEnabled="False" SelectedDate="{Binding CurrentObjective.UpdatedDate}" MinWidth="150" FontSize="16"/>
+                    <DatePicker IsEnabled="False" SelectedDate="{Binding Path=CurrentObjective.UpdatedDate, StringFormat=dd/MM/yyyy}" MinWidth="150" FontSize="16"/>
                 </StackPanel>
             </StackPanel>
-            <Button Content="{DynamicResource SubmitCaption}" Command="{Binding SubmitObjectiveCommand}" FontSize="16" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="{DynamicResource BackCaption}" 
+                        Command="{Binding BackCommand}" 
+                        FontSize="16"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Center"/>
+                <Button Content="{DynamicResource SubmitCaption}" 
+                        Command="{Binding SubmitObjectiveCommand}" 
+                        FontSize="16" 
+                        HorizontalAlignment="Center"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </UserControl>

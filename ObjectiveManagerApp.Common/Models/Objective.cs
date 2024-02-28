@@ -12,18 +12,20 @@ namespace ObjectiveManagerApp.Common.Models
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public DateTime Deadline { get; set; }
+        public DateTime Deadline { get; set; } = DateTime.Now;
 
         public Project Project { get; set; }
 
         public Category Category { get; set; }
 
-        [ForeignKey("Id")]
         public PublicUserData User { get; set; }
 
         public int UserId { get; set; }
+        public int ProjectId { get; set; }
+        public int CategoryId { get; set; }
 
-        public Objective(int id, string name, string description, DateTime createdDate, DateTime updatedDate, DateTime deadline, int userId)
+
+        public Objective(int id, string name, string description, DateTime createdDate, DateTime updatedDate, DateTime deadline, int userId, int projectId, int categoryId)
         {
             Id = id;
             Name = name;
@@ -32,6 +34,8 @@ namespace ObjectiveManagerApp.Common.Models
             UpdatedDate = updatedDate;
             Deadline = deadline;
             UserId = userId;
+            ProjectId = projectId;
+            CategoryId = categoryId;
         }
 
         public Objective()

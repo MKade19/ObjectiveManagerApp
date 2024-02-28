@@ -32,11 +32,14 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                await Task.Run(() =>
+                var objectiveToRemove = await db.Objectives.FindAsync(objective.Id);
+
+                if (objectiveToRemove != null)
                 {
+                    db.Entry(objectiveToRemove).State = EntityState.Detached;
                     db.Objectives.Remove(objective);
-                });
-                await db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
+                }
             }
         }
 
@@ -49,7 +52,10 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                return await db.Objectives.FirstAsync(x => x.Id == id);
+                return await db.Objectives
+                    .Include(nameof(Objective.Project))
+                    .Include(nameof(Objective.Category))
+                    .FirstAsync(x => x.Id == id);
             }
         }
 
@@ -69,6 +75,7 @@ namespace ObjectiveManagerApp.UI.Data
                 objective.UpdatedDate = DateTime.Now;
                 objectiveFromDb.Deadline = objective.Deadline;
                 objectiveFromDb.UserId = objective.UserId;
+                objectiveFromDb.CategoryId = objective.CategoryId;
 
                 await db.SaveChangesAsync();
             }

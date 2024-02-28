@@ -66,15 +66,13 @@ namespace ObjectiveManagerApp.UI.ViewModels
         {
             try
             {
-                //IsLoading = true;
+                EventAggregator.Instance.RaiseProjectViewIsLoadingEvent();
                 Projects.Clear();
-                //var jopa = ((CustomIdentity)Thread.CurrentPrincipal.Identity).UserId;
                 Projects = new ObservableCollection<Project>(await _projectService.GetByUserIdAsync(((CustomIdentity)Thread.CurrentPrincipal.Identity).UserId));
-                //ActiveProject.ManagerId = id;
             }
             finally
             {
-                //IsLoading = false;
+                EventAggregator.Instance.RaiseProjectViewFinishedLoadingEvent();
             }
         }
 
@@ -82,7 +80,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
         {
             try
             {
-                //IsLoading = true;
+                EventAggregator.Instance.RaiseProjectViewIsLoadingEvent();
 
                 if (MessageBoxStore.Confirmation((string)Application.Current.FindResource(DeleteConfirmationMessageName)) != MessageBoxResult.Yes)
                 {
@@ -95,7 +93,7 @@ namespace ObjectiveManagerApp.UI.ViewModels
             }
             finally
             {
-                //IsLoading = false;
+                EventAggregator.Instance.RaiseProjectViewFinishedLoadingEvent();
             }
         }
 
@@ -112,12 +110,12 @@ namespace ObjectiveManagerApp.UI.ViewModels
 
         public void GoToCreateProjectCommand_Executed(object sender)
         {
-            EventAggregator.Instance.RaiseGoToProjectEditFormEvent(ActiveProject.Id, FormType.Create);
+            EventAggregator.Instance.RaiseGoToProjectEditFormEvent(-1);
         }
         
         public void GoToEditProjectCommand_Executed(object sender)
         {
-            EventAggregator.Instance.RaiseGoToProjectEditFormEvent(ActiveProject.Id, FormType.Edit);
+            EventAggregator.Instance.RaiseGoToProjectEditFormEvent(ActiveProject.Id);
         }
     }
 }

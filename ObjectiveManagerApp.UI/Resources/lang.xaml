@@ -42,6 +42,8 @@
     <v:String x:Key="DeleteCaption">Delete</v:String>
     <v:String x:Key="InfoCaption">Info</v:String>
     <v:String x:Key="CreateEditCaption">Create/Edit</v:String>
+    <v:String x:Key="LeftArrowCaption">&lt;-</v:String>
+    <v:String x:Key="RightArrowCaption">-&gt;</v:String>
     <!--Project view-->
     <v:String x:Key="ProjectListIsEmpty">There is no projects yet...</v:String>
     <v:String x:Key="ProjectInfoHeader">Info</v:String>
@@ -59,7 +61,8 @@
     <v:String x:Key="LogoutMessage">You have logged out!</v:String>
     <v:String x:Key="DataSavedMessage">Data was saved!</v:String>
     <v:String x:Key="ProjectDeleteMessage">Project was deleted!</v:String>
+    <v:String x:Key="ObjectiveDeleteMessage">Objective was deleted!</v:String>
     <v:String x:Key="PasswordsDoesNotMatchMessage">Passwords does not match!</v:String>
     <!--Confirmation messages-->
-    <v:String x:Key="DeleteConfirmationMessage">Are you sure to delete this project?</v:String>
+    <v:String x:Key="DeleteConfirmationMessage">Are you sure to delete this item?</v:String>
 </ResourceDictionary>

@@ -25,11 +25,12 @@ namespace ObjectiveManagerApp.UI.EventAggregation
         public event EventHandler? DashboardViewFinishedLoading;
         public event EventHandler? ClearPasswordBox;
         public event EventHandler? GoToProjects;
-        public event EventHandler<FormNavigationEventArgs>? GoToProjectEditForm;
-        public event EventHandler<FormNavigationEventArgs>? GoToObjectiveEditForm;
+        public event EventHandler<NavigationEventArgs>? GoToProjectEditForm;
+        public event EventHandler<ObjectiveNavigationEventArgs>? GoToObjectiveEditForm;
         public event EventHandler? GoToSignIn;
         public event EventHandler? GoToSignUp;
         public event EventHandler<NavigationEventArgs>? GoToDashboard;
+        public event EventHandler? BackToDashboard;
         public event EventHandler? GoToObjectives;
 
         public void RaiseLoginEvent()
@@ -82,14 +83,14 @@ namespace ObjectiveManagerApp.UI.EventAggregation
             GoToProjects?.Invoke(this, EventArgs.Empty);
         }
 
-        public void RaiseGoToProjectEditFormEvent(int projectId, FormType type)
+        public void RaiseGoToProjectEditFormEvent(int projectId)
         {
-            GoToProjectEditForm?.Invoke(this, new FormNavigationEventArgs(projectId, type));
+            GoToProjectEditForm?.Invoke(this, new NavigationEventArgs(projectId));
         }
         
-        public void RaiseGoToObjectiveEditFormEvent(int projectId, FormType type)
+        public void RaiseGoToObjectiveEditFormEvent(int objectiveId, int projectId)
         {
-            GoToObjectiveEditForm?.Invoke(this, new FormNavigationEventArgs(projectId, type));
+            GoToObjectiveEditForm?.Invoke(this, new ObjectiveNavigationEventArgs(objectiveId, projectId));
         }
 
         public void RaiseGoToSignInEvent()
@@ -105,6 +106,11 @@ namespace ObjectiveManagerApp.UI.EventAggregation
         public void RaiseGoToDashboardEvent(int projectId)
         {
             GoToDashboard?.Invoke(this, new NavigationEventArgs(projectId));
+        }
+
+        public void RaiseBackToDashboardEvent()
+        {
+            BackToDashboard?.Invoke(this, EventArgs.Empty);
         }
 
         public void RaiseGoToObjectivesEvent()

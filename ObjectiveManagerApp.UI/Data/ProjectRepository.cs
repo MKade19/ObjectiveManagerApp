@@ -35,11 +35,11 @@ namespace ObjectiveManagerApp.UI.Data
         {
             using (ApplicationContext db = Db)
             {
-                var entityToRemove = await db.Projects.FindAsync(project.Id);
+                var projectToRemove = await db.Projects.FindAsync(project.Id);
 
-                if(entityToRemove != null)
+                if (projectToRemove != null)
                 {
-                    db.Entry(entityToRemove).State = EntityState.Detached;
+                    db.Entry(projectToRemove).State = EntityState.Detached;
                     db.Projects.Remove(project);
                     await db.SaveChangesAsync();
                 }
